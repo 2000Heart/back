@@ -13,7 +13,7 @@ def create_user(db: Session, user: schemas.CreateUser):
 
 
 def check_user_exist(db: Session, name: str, school: str):
-    return db.query(models.User).filter(models.User.userName == name, models.User.school == school).scalar()
+    return db.query(models.User).filter(models.User.userName == name, models.User.school == school).count()
 
 
 def check_user(db: Session, username: str, password: str):

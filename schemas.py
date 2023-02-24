@@ -14,3 +14,9 @@ class ReadUser(CreateUser):
 
     class Config:
         orm_mode = True
+
+
+class QueryUser(BaseModel):
+    userName: str
+    password: str
+    school: str

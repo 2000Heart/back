@@ -1,9 +1,10 @@
 from sqlalchemy import Column, String, Integer
+from sqlalchemy_model_convert.sqlalchemy_model_convert import ModelConvert
 
 from database import Base
 
 
-class User(Base):
+class User(Base, ModelConvert):
     __tablename__ = 'user'
 
     userId = Column(Integer, primary_key=True, autoincrement=True)
