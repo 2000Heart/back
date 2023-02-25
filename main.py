@@ -2,7 +2,6 @@ import json
 
 from fastapi import Depends, APIRouter
 from fastapi.responses import JSONResponse
-from sqlalchemy import null
 from sqlalchemy.orm import Session
 import crud
 import schemas
@@ -22,11 +21,6 @@ def get_db():
 @application.get("/")
 async def root():
     return {"message": "Hello World"}
-
-
-@application.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
 
 
 @application.post("/user")
