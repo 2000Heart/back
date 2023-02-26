@@ -36,8 +36,19 @@ async def login(data: schemas.QueryUser, db: Session = Depends(get_db)):
     db_user = crud.check_user_exist(db=db, name=data.userName, school=data.school)
     if db_user <= 0:
         return JSONResponse(content={"d": {"msg": "用户不存在"}}, status_code=300)
-    check = crud.check_user(db=db, username=data.userName, password=data.password)
+    check = crud.query_user(db=db, username=data.userName, password=data.password)
     if check is None:
         return JSONResponse(content={"d": {"msg": "密码错误"}}, status_code=300)
     else:
         return {"d": check, "t": json.dumps(check.key_values())}
+
+
+@application.post("/schedule")
+async def insert_schedule(data: schemas.InsertLesson, db: Session = Depends(get_db)):
+    db_lesson = crud.check_lesson(db=db, lesson=data)
+    if db_lesson is None:
+        db_lesson = crud.create_lesson(db=db, lesson=data)
+    insert = crud.insert_user_to_lesson(
+        db=db, e=schemas.InsertUserToLesson(
+            userId=data.userId, userType=data.userType, lessonId=db_lesson.lessonId))
+    return {"d": insert, "t": json.dumps(insert.key_values())}
