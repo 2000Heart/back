@@ -40,3 +40,7 @@ def create_user_s_lesson(db: Session, e: schemas.CreateUsersLesson):
     db.commit()
     db.refresh(db_e)
     return db_e
+
+
+def query_schedule(db: Session, userId: int):
+    return db.query(models.UsersLesson).filter(models.UsersLesson.userId.__contains__(o=userId)).all()

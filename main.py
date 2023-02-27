@@ -5,6 +5,7 @@ from fastapi import Depends, APIRouter
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 import crud
+import models
 import schemas
 from database import SessionLocal
 
@@ -44,7 +45,7 @@ async def login(data: schemas.QueryUser, db: Session = Depends(get_db)):
         return {"d": check, "t": json.dumps(check.key_values())}
 
 
-@application.post("/schedule")
+@application.post("/schedule/insert")
 async def insert_schedule(data: schemas.CreateUsersLesson, db: Session = Depends(get_db)):
     db_lesson = crud.create_user_s_lesson(db=db, e=data)
     db_teacher = crud.check_user_exist(db=db, data=schemas.QueryUser(userName=data.teacherName, userType=1,
@@ -63,3 +64,13 @@ async def insert_schedule(data: schemas.CreateUsersLesson, db: Session = Depends
             endWeek=data.endWeek,
             classroom=data.classroom))
     return {"d": insert, "t": json.dumps(insert.key_values())}
+
+
+@application.post("/schedule/query")
+async def query_schedule(userId: int, db: Session = Depends(get_db)):
+    db_schedule: list = crud.query_schedule(db, userId)
+    if db_schedule is None:
+        return JSONResponse(content={"d": {"msg": "当前用户无课程"}}, status_code=300)
+    for item in db_schedule:
+        item.duration = item.duration.split(sep=",")
+    return {"d": db_schedule, "t": json.dumps(db_schedule.key_values())}
