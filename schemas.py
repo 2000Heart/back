@@ -1,3 +1,4 @@
+# coding=utf-8
 from pydantic import BaseModel
 
 
@@ -18,29 +19,22 @@ class ReadUser(CreateUser):
 
 class QueryUser(BaseModel):
     userName: str
-    password: str
+    userType: int
     school: str
 
 
-# class CreateLesson(BaseModel):
-#     lessonName = str
-#     classroom = str
-#     startWeek = int
-#     endWeek = int
+class CreateLesson(BaseModel):
+    lessonName: str
 
 
-class InsertLesson(BaseModel):
-    userId = int
-    userType = int
-    lessonName = str
+class CreateUsersLesson(BaseModel):
+    userId: int
+    userName: str
+    school: str
+    lessonId: int
+    lessonName: str
+    teacherId: int = None
+    teacherName = ""
+    startWeek: int
+    endWeek: int
     classroom = ""
-    startWeek = int
-    endWeek = int
-    # 添加endweek大于startweek检测
-    # teacherName = ""
-
-
-class InsertUserToLesson(BaseModel):
-    userId = int
-    userType = int
-    lessonId = int

@@ -1,3 +1,4 @@
+# coding=utf-8
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy_model_convert.sqlalchemy_model_convert import ModelConvert
 
@@ -5,7 +6,7 @@ from database import Base
 
 
 class User(Base, ModelConvert):
-    __tablename__ = 'user'
+    __tablename__ = 'User'
 
     userId = Column(Integer, primary_key=True, autoincrement=True)
     userName = Column(String(255), nullable=False)
@@ -19,21 +20,23 @@ class User(Base, ModelConvert):
         return f"{self.userId}-{self.userName}"
 
 
-class Lesson(Base, ModelConvert):
-    __tablename__ = 'lesson'
+class Lessons(Base, ModelConvert):
+    __tablename__ = 'Lessons'
 
     lessonId = Column(Integer, primary_key=True, autoincrement=True)
-    lessonName = Column(String(255))
-    classroom = Column(String(255))
-    startWeek = Column(Integer)
-    endWeek = Column(Integer)
+    lessonName = Column(String(255), unique=True)
 
 
-class UserToLesson(Base, ModelConvert):
-    __tablename__ = 'userToLesson'
+class UsersLesson(Base, ModelConvert):
+    __tablename__ = 'UsersLesson'
 
     eventId = Column(Integer, primary_key=True, autoincrement=True)
-    userId = Column(Integer, ForeignKey('user.userId'))
-    userType = Column(Integer, ForeignKey('user.userType'))
-    lessonId = Column(Integer, ForeignKey('lesson.lessonId'))
-
+    userId = Column(Integer, ForeignKey('User.userId'))
+    userName = Column(String(255), ForeignKey('User.userName'))
+    lessonId = Column(Integer, ForeignKey('Lesson.lessonId'))
+    lessonName = Column(String(255), ForeignKey('Lessons.lessonName'))
+    teacherId = Column(Integer, nullable=True)
+    teacherName = Column(String(255), nullable=True)
+    startWeek = Column(Integer, nullable=False)
+    endWeek = Column(Integer, nullable=False)
+    classroom = Column(String(255), nullable=True)
