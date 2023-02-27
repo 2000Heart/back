@@ -6,7 +6,7 @@ from database import Base
 
 
 class User(Base, ModelConvert):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
 
     userId = Column(Integer, primary_key=True, autoincrement=True)
     userName = Column(String(255), nullable=False)
@@ -21,22 +21,22 @@ class User(Base, ModelConvert):
 
 
 class Lessons(Base, ModelConvert):
-    __tablename__ = 'Lessons'
+    __tablename__ = 'lessons'
 
     lessonId = Column(Integer, primary_key=True, autoincrement=True)
     lessonName = Column(String(255), unique=True)
 
 
 class UsersLesson(Base, ModelConvert):
-    __tablename__ = 'UsersLesson'
+    __tablename__ = 'lesson_schedule'
 
     eventId = Column(Integer, primary_key=True, autoincrement=True)
-    userId = Column(Integer, ForeignKey('User.userId'))
-    userName = Column(String(255), ForeignKey('User.userName'))
+    userId = Column(String(255), nullable=True)
     lessonId = Column(Integer, ForeignKey('Lesson.lessonId'))
     lessonName = Column(String(255), ForeignKey('Lessons.lessonName'))
     teacherId = Column(Integer, nullable=True)
     teacherName = Column(String(255), nullable=True)
-    startWeek = Column(Integer, nullable=False)
-    endWeek = Column(Integer, nullable=False)
+    duration = Column(String(255), nullable=False)
+    weekTime = Column(Integer, nullable=False)
+    unit = Column(Integer, nullable=False)
     classroom = Column(String(255), nullable=True)

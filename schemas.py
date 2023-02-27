@@ -27,14 +27,17 @@ class CreateLesson(BaseModel):
     lessonName: str
 
 
-class CreateUsersLesson(BaseModel):
-    userId: int
-    userName: str
-    school: str
+class CreateSchedule(BaseModel):
     lessonId: int
     lessonName: str
     teacherId: int = None
     teacherName = ""
-    startWeek: int
-    endWeek: int
+    userId = ""
+    duration: str
+    weekTime: int
+    unit: int
     classroom = ""
+
+
+class QuerySchedule(BaseModel):
+    userId: str
