@@ -34,7 +34,7 @@ async def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
 
 
 @application.post("/login")
-async def login(data: schemas.QueryUser, db: Session = Depends(get_db)):
+async def login(data: schemas.CreateUser, db: Session = Depends(get_db)):
     db_user = crud.check_user_exist(db=db, data=data)
     if db_user is None:
         return JSONResponse(content={"d": {"msg": "用户不存在"}}, status_code=300)
@@ -45,25 +45,22 @@ async def login(data: schemas.QueryUser, db: Session = Depends(get_db)):
         return {"d": check, "t": json.dumps(check.key_values())}
 
 
-@application.post("/schedule/insert")
-async def insert_schedule(data: schemas.CreateUsersLesson, db: Session = Depends(get_db)):
-    db_lesson = crud.create_user_s_lesson(db=db, e=data)
-    db_teacher = crud.check_user_exist(db=db, data=schemas.QueryUser(userName=data.teacherName, userType=1,
-                                                                     school=data.school))
-    if db_lesson is None:
-        db_lesson = crud.create_lesson(db=db, lesson=schemas.CreateLesson(lessonName=data.lessonName))
-    insert = crud.create_user_s_lesson(
-        db=db, e=schemas.CreateUsersLesson(
-            userId=data.userId,
-            userName=data.userName,
-            lessonId=db_lesson.lessonId,
-            lessonName=data.lessonName,
-            teacherId=db_teacher.userId,
-            teacherName=db_teacher.userName,
-            startWeek=data.startWeek,
-            endWeek=data.endWeek,
-            classroom=data.classroom))
-    return {"d": insert, "t": json.dumps(insert.key_values())}
+@application.post("/schedule/create")
+async def create_schedule(data: schemas.CreateSchedule, db: Session = Depends(get_db)):
+    if data.lessonId is None:
+        data.lessonId = crud.create_lesson(db, schemas.CreateLesson(lessonName=data.lessonName)).lessonId
+    db_schedule: models.Schedule = crud.check_schedule(db, data)
+    if db_schedule is None:
+        db_create = crud.create_schedule(db, data)
+        return {"d": db_create, "t": json.dumps(db_create.key_values())}
+    else:
+        db_data = data
+        if db_schedule.userId is not None:
+            e: list = db_schedule.userId.split(",")
+            e.append(data.userId)
+            db_data.userId = ",".join(e)
+        db_insert = crud.update_schedule(db, db_schedule.eventId, db_data)
+        return {"d": db_insert, "t": db_insert}
 
 
 @application.post("/schedule/query")
@@ -73,4 +70,4 @@ async def query_schedule(userId: int, db: Session = Depends(get_db)):
         return JSONResponse(content={"d": {"msg": "当前用户无课程"}}, status_code=300)
     for item in db_schedule:
         item.duration = item.duration.split(sep=",")
-    return {"d": db_schedule, "t": json.dumps(db_schedule.key_values())}
+    return {"d": db_schedule, "t": db_schedule}

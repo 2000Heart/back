@@ -1,41 +1,42 @@
 # coding=utf-8
+from sqlalchemy import text, insert
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import exists
-import models
+from models import Schedule, User, Lessons
 import schemas
 
 
 def create_user(db: Session, user: schemas.CreateUser):
-    db_user = models.User(**user.dict())
+    db_user = db.execute(insert(User), user.dict())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
-def check_user_exist(db: Session, data: schemas.QueryUser or schemas.CreateUser):
-    return db.query(models.User).filter(
-        models.User.userName == data.userName,
-        models.User.school == data.school,
-        models.User.userType == data.userType).first()
+def check_user_exist(db: Session, data: schemas.CreateUser):
+    return db.query(User).filter(
+        User.userName == data.userName,
+        User.school == data.school,
+        User.userType == data.userType).first()
 
 
 def query_user(db: Session, username: str, password: str):
-    return db.query(models.User).filter(
-        models.User.userName == username,
-        models.User.password == password).first()
+    return db.query(User).filter(
+        User.userName == username,
+        User.password == password).first()
 
 
 def create_lesson(db: Session, lesson: schemas.CreateLesson):
-    db_lesson = models.Lessons(**lesson.dict())
+    db_lesson = Lessons(**lesson.dict())
     db.add(db_lesson)
     db.commit()
     db.refresh(db_lesson)
     return db_lesson
 
 
-def create_user_s_lesson(db: Session, e: schemas.CreateUsersLesson):
-    db_e = models.UsersLesson(**e.dict())
+def create_schedule(db: Session, e: schemas.CreateSchedule):
+    db_e = Schedule(**e.dict())
     db.add(db_e)
     db.commit()
     db.refresh(db_e)
@@ -43,4 +44,27 @@ def create_user_s_lesson(db: Session, e: schemas.CreateUsersLesson):
 
 
 def query_schedule(db: Session, userId: int):
-    return db.query(models.UsersLesson).filter(models.UsersLesson.userId.__contains__(o=userId)).all()
+    db_all: list = db.query(Schedule).all()
+    db_e = []
+    for e in db_all:
+        if e.userId is None:
+            if e.userId == userId:
+                db_e.append(e)
+        else:
+            if any(f"{userId}" in item for item in e.userId.split(",")):
+                db_e.append(e)
+    return db_e
+
+
+def check_schedule(db: Session, e: schemas.CreateSchedule):
+    return db.query(Schedule).filter(
+        Schedule.lessonId == e.lessonId,
+        Schedule.duration == e.duration,
+        Schedule.unit == e.unit
+    ).first()
+
+
+def update_schedule(db: Session, eventId: int, e):
+    num = db.query(Schedule).filter_by(eventId=eventId).update(e.dict())
+    db.commit()
+    return num
