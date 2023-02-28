@@ -14,6 +14,7 @@ class User(Base, ModelConvert):
     school = Column(String(255), nullable=False)
     avatar = Column(String(255), nullable=True)
     userType = Column(Integer, nullable=False)
+
     # className = Column(String(255), nullable=True)
 
     def __repr__(self):
