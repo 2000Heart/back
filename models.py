@@ -27,7 +27,7 @@ class Lessons(Base, ModelConvert):
     lessonName = Column(String(255), unique=True)
 
 
-class UsersLesson(Base, ModelConvert):
+class Schedule(Base, ModelConvert):
     __tablename__ = 'lesson_schedule'
 
     eventId = Column(Integer, primary_key=True, autoincrement=True)
@@ -40,3 +40,14 @@ class UsersLesson(Base, ModelConvert):
     weekTime = Column(Integer, nullable=False)
     unit = Column(Integer, nullable=False)
     classroom = Column(String(255), nullable=True)
+
+
+class CheckInLesson(Base, ModelConvert):
+    __tablename__ = 'check_schedule'
+
+    checkId = Column(Integer, primary_key=True, autoincrement=True)
+    lessonId = Column(Integer, ForeignKey('Lesson.lessonId'))
+    teacherId = Column(Integer)
+    postTime = Column(String(255), nullable=True)
+    checkedUser = Column(String(255), nullable=True)
+    userAll = Column(String(255), nullable=False)

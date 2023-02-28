@@ -20,6 +20,7 @@ class ReadUser(CreateUser):
 class QueryUser(BaseModel):
     userName: str
     userType: int
+    password: int
     school: str
 
 
@@ -28,7 +29,7 @@ class CreateLesson(BaseModel):
 
 
 class CreateSchedule(BaseModel):
-    lessonId: int
+    lessonId: int = None
     lessonName: str
     teacherId: int = None
     teacherName = ""
