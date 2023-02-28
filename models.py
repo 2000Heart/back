@@ -2,7 +2,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy_model_convert.sqlalchemy_model_convert import ModelConvert
 
-from database import Base
+from database import Base, engine
 
 
 class User(Base, ModelConvert):
@@ -14,10 +14,12 @@ class User(Base, ModelConvert):
     school = Column(String(255), nullable=False)
     avatar = Column(String(255), nullable=True)
     userType = Column(Integer, nullable=False)
-    className = Column(String(255), nullable=True)
+    # className = Column(String(255), nullable=True)
 
     def __repr__(self):
         return f"{self.userId}-{self.userName}"
+
+    Base.metadata.create_all(engine)
 
 
 class Lessons(Base, ModelConvert):
@@ -26,14 +28,16 @@ class Lessons(Base, ModelConvert):
     lessonId = Column(Integer, primary_key=True, autoincrement=True)
     lessonName = Column(String(255), unique=True)
 
+    Base.metadata.create_all(engine)
+
 
 class Schedule(Base, ModelConvert):
     __tablename__ = 'lesson_schedule'
 
     eventId = Column(Integer, primary_key=True, autoincrement=True)
     userId = Column(String(255), nullable=True)
-    lessonId = Column(Integer, ForeignKey('Lesson.lessonId'))
-    lessonName = Column(String(255), ForeignKey('Lessons.lessonName'))
+    lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
+    lessonName = Column(String(255), ForeignKey('lessons.lessonName'))
     teacherId = Column(Integer, nullable=True)
     teacherName = Column(String(255), nullable=True)
     duration = Column(String(255), nullable=False)
@@ -41,13 +45,17 @@ class Schedule(Base, ModelConvert):
     unit = Column(Integer, nullable=False)
     classroom = Column(String(255), nullable=True)
 
+    Base.metadata.create_all(engine)
+
 
 class CheckInLesson(Base, ModelConvert):
     __tablename__ = 'check_schedule'
 
     checkId = Column(Integer, primary_key=True, autoincrement=True)
-    lessonId = Column(Integer, ForeignKey('Lesson.lessonId'))
+    lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
     teacherId = Column(Integer)
     postTime = Column(String(255), nullable=True)
     checkedUser = Column(String(255), nullable=True)
     userAll = Column(String(255), nullable=False)
+
+    Base.metadata.create_all(engine)
