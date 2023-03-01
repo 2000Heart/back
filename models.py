@@ -60,3 +60,12 @@ class CheckInLesson(Base, ModelConvert):
     userAll = Column(String(255), nullable=False)
 
     Base.metadata.create_all(engine)
+
+
+class Majors(Base, ModelConvert):
+    __tablename__ = 'majors'
+
+    majorId = Column(Integer, primary_key=True, autoincrement=True)
+    majorName = Column(String(255), unique=True)
+
+    Base.metadata.create_all(engine)
