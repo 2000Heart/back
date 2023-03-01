@@ -43,7 +43,8 @@ class Schedule(Base, ModelConvert):
     teacherName = Column(String(255), nullable=True)
     duration = Column(String(255), nullable=False)
     weekTime = Column(Integer, nullable=False)
-    unit = Column(Integer, nullable=False)
+    startUnit = Column(Integer, nullable=False)
+    endUnit = Column(Integer, nullable=False)
     classroom = Column(String(255), nullable=True)
 
     Base.metadata.create_all(engine)
@@ -58,6 +59,9 @@ class CheckInLesson(Base, ModelConvert):
     postTime = Column(String(255), nullable=True)
     checkedUser = Column(String(255), nullable=True)
     userAll = Column(String(255), nullable=False)
+    startTime = Column(String(255), nullable=False)
+    endTime = Column(String(255), nullable=False)
+    status = Column(Integer)
 
     Base.metadata.create_all(engine)
 
@@ -69,3 +73,22 @@ class Majors(Base, ModelConvert):
     majorName = Column(String(255), unique=True)
 
     Base.metadata.create_all(engine)
+
+
+class LessonInfo(Base, ModelConvert):
+    __tablename__ = 'lesson_info'
+
+    infoId = Column(Integer, primary_key=True, autoincrement=True)
+    lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
+    teacherId = Column(Integer)
+    teacherName = Column(String(255))
+    lessonTask = Column(String(255))
+    checkId = Column(Integer, ForeignKey('check_schedule'), nullable=True)
+
+
+class ClassInfo(Base, ModelConvert):
+    __tablename__ = 'class_info'
+
+    classId = Column(Integer, primary_key=True, autoincrement=True)
+    teacherId = Column(String(255))
+    userId = Column(String(255))

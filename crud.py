@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from sqlalchemy import insert, and_
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 import schemas
@@ -56,10 +56,14 @@ def query_schedule(db: Session, userId: int):
 def check_schedule(db: Session, e: schemas.CreateSchedule):
     return db.query(Schedule).filter(
         and_(Schedule.lessonId == e.lessonId, Schedule.duration == e.duration, Schedule.weekTime == e.weekTime,
-             Schedule.unit == e.unit)).first()
+             Schedule.startUnit == e.startUnit, Schedule.endUnit == e.endUnit)).first()
 
 
 def update_schedule(db: Session, eventId: int, e):
     num = db.query(Schedule).filter_by(eventId=eventId).update(e.dict())
     db.commit()
     return num
+
+
+# def create_class(db:Session, schedule: schemas.CreateSchedule):
+#
