@@ -1,13 +1,14 @@
 # coding=utf-8
-from sqlalchemy import text, insert
+
+from sqlalchemy import insert, and_
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import exists
-from models import Schedule, User, Lessons
+
 import schemas
+from models import Schedule, User, Lessons
 
 
 def create_user(db: Session, user: schemas.CreateUser):
-    db_user = db.execute(insert(User), user.dict())
+    db_user = User(**user.dict())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -16,15 +17,11 @@ def create_user(db: Session, user: schemas.CreateUser):
 
 def check_user_exist(db: Session, data: schemas.CreateUser):
     return db.query(User).filter(
-        User.userName == data.userName,
-        User.school == data.school,
-        User.userType == data.userType).first()
+        and_(User.userName == data.userName, User.school == data.school, User.userType == data.userType)).first()
 
 
 def query_user(db: Session, username: str, password: str):
-    return db.query(User).filter(
-        User.userName == username,
-        User.password == password).first()
+    return db.query(User).filter(and_(User.userName == username, User.password == password)).first()
 
 
 def create_lesson(db: Session, lesson: schemas.CreateLesson):
@@ -35,12 +32,12 @@ def create_lesson(db: Session, lesson: schemas.CreateLesson):
     return db_lesson
 
 
-def create_schedule(db: Session, e: schemas.CreateSchedule):
-    db_e = Schedule(**e.dict())
-    db.add(db_e)
+def create_schedule(db: Session, schedule: schemas.CreateSchedule):
+    db_schedule = Schedule(**schedule.dict())
+    db.add(db_schedule)
     db.commit()
-    db.refresh(db_e)
-    return db_e
+    db.refresh(db_schedule)
+    return db_schedule
 
 
 def query_schedule(db: Session, userId: int):
@@ -58,10 +55,8 @@ def query_schedule(db: Session, userId: int):
 
 def check_schedule(db: Session, e: schemas.CreateSchedule):
     return db.query(Schedule).filter(
-        Schedule.lessonId == e.lessonId,
-        Schedule.duration == e.duration,
-        Schedule.unit == e.unit
-    ).first()
+        and_(Schedule.lessonId == e.lessonId, Schedule.duration == e.duration, Schedule.weekTime == e.weekTime,
+             Schedule.unit == e.unit)).first()
 
 
 def update_schedule(db: Session, eventId: int, e):

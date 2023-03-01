@@ -31,13 +31,13 @@ class CreateLesson(BaseModel):
 class CreateSchedule(BaseModel):
     lessonId: int = None
     lessonName: str
-    teacherId: int = None
-    teacherName = ""
-    userId = ""
+    teacherId: int
+    teacherName: str
+    userId: str
     duration: str
     weekTime: int
     unit: int
-    classroom = ""
+    classroom: str
 
 
 class QuerySchedule(BaseModel):
