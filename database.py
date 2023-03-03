@@ -1,7 +1,7 @@
 # coding=utf-8
-import sqlalchemy
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker, declarative_base, Session
+import json
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 url = "mysql+pymysql://back444:as4793552@47.115.211.39:3306/back444"
 engine = create_engine(url, echo=True)
@@ -12,3 +12,18 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expi
 
 # 创建基本映射类
 Base = declarative_base(name='Base')
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def body(value):
+    return {
+        "d": value,
+        "t": json.dumps(value.key_values())
+    }
