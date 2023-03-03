@@ -8,13 +8,7 @@ class CreateUser(BaseModel):
     school: str
     avatar: str
     userType: int
-
-
-class ReadUser(CreateUser):
-    userId: int
-
-    class Config:
-        orm_mode = True
+    classId: int
 
 
 class QueryUser(BaseModel):
@@ -51,6 +45,9 @@ class CreateCheckIn(BaseModel):
     postTime: str
     checkedUser: str
     userAll: str
+    startTime: str
+    endTime: str
+    status: int
 
 
 class CreateMajor(BaseModel):
@@ -63,11 +60,19 @@ class CreateLessonInfo(BaseModel):
     teacherName: str
     lessonTask: str
     checkId: int
+    lessonName: str
+    eventId: int
+    checkId: int
+    userId: str
 
 
-class ClassInfo(Base, ModelConvert):
-    __tablename__ = 'class_info'
+class CreateClass(BaseModel):
+    teacherId: str
+    userId: str
 
-    classId = Column(Integer, primary_key=True, autoincrement=True)
-    teacherId = Column(String(255))
-    userId = Column(String(255))
+
+class CreateClassroom(BaseModel):
+    schoolId: int
+    roomName: str
+    column: str
+    row: str

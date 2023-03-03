@@ -14,8 +14,7 @@ class User(Base, ModelConvert):
     school = Column(String(255), nullable=False)
     avatar = Column(String(255), nullable=True)
     userType = Column(Integer, nullable=False)
-
-    # className = Column(String(255), nullable=True)
+    classId = Column(Integer, nullable=True)
 
     def __repr__(self):
         return f"{self.userId}-{self.userName}"
@@ -54,7 +53,7 @@ class CheckInLesson(Base, ModelConvert):
     __tablename__ = 'check_schedule'
 
     checkId = Column(Integer, primary_key=True, autoincrement=True)
-    lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
+    realLessonId = Column(Integer, ForeignKey('real_lesson.realLessonId'))
     teacherId = Column(Integer)
     postTime = Column(String(255), nullable=True)
     checkedUser = Column(String(255), nullable=True)
@@ -80,10 +79,13 @@ class LessonInfo(Base, ModelConvert):
 
     infoId = Column(Integer, primary_key=True, autoincrement=True)
     lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
-    teacherId = Column(Integer)
+    lessonName = Column(String(255))
+    teacherId = Column(Integer),
+    eventId = Column(Integer, ForeignKey('lesson_schedule.eventId'))
     teacherName = Column(String(255))
     lessonTask = Column(String(255))
     checkId = Column(Integer, ForeignKey('check_schedule'), nullable=True)
+    userId = Column(255)
 
 
 class ClassInfo(Base, ModelConvert):
@@ -92,3 +94,13 @@ class ClassInfo(Base, ModelConvert):
     classId = Column(Integer, primary_key=True, autoincrement=True)
     teacherId = Column(String(255))
     userId = Column(String(255))
+
+
+class Classroom(Base, ModelConvert):
+    __tablename__ = 'classroom'
+
+    roomId = Column(Integer, primary_key=True, autoincrement=True)
+    schoolId = Column(Integer)
+    roomName = Column(String(255))
+    column = Column(String(255))
+    row = Column(String(255))

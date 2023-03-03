@@ -71,3 +71,8 @@ async def query_schedule(userId: int, db: Session = Depends(get_db)):
     for item in db_schedule:
         item.duration = item.duration.split(sep=",")
     return {"d": db_schedule, "t": db_schedule}
+
+
+@application.post("/check/create")
+async def create_check(e: schemas.CreateCheckIn, db: Session = Depends(get_db)):
+    return e
