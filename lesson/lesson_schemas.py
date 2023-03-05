@@ -3,11 +3,11 @@ from pydantic import BaseModel
 
 class CreateLessonInfo(BaseModel):
     lessonId: int
+    lessonName: str
     teacherId: int
     teacherName: str
     lessonTask: str
     checkId: int
-    lessonName: str
     eventId: int
     checkId: int
     userId: str
@@ -16,11 +16,26 @@ class CreateLessonInfo(BaseModel):
 class QueryLessonInfo(BaseModel):
     userId: int
     infoId: int
-    teacherId: int
+    userType: int
 
 
 class ReadLessonInfo(CreateLessonInfo):
     infoId: int
+
+
+class AddLessonTask(BaseModel):
+    infoId: int
+    lessonTask: str
+
+
+class AddLessonCheck(BaseModel):
+    infoId: int
+    checkId: int
+
+
+class AddUser(BaseModel):
+    infoId: int
+    userId: str
 
 
 class CreateCheck(BaseModel):
@@ -35,8 +50,8 @@ class CreateCheck(BaseModel):
 
 
 class QueryCheck(BaseModel):
-    userId: int
     lessonId: int
+    userId: int
 
 
 class ReadCheck(CreateCheck):

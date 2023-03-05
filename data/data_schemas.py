@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import BaseModel
 
 
@@ -23,3 +25,9 @@ class CreateClassroom(BaseModel):
 
 class CreateSchool(BaseModel):
     schoolName: str
+
+
+class Return(BaseModel):
+    d: dict
+    t: dict
+

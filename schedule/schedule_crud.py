@@ -2,6 +2,7 @@ from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from schedule import schedule_schemas
 from schedule.schedule_models import Schedule
+from utils import checkUser
 
 
 def create_schedule(db: Session, schedule: schedule_schemas.CreateSchedule):
@@ -14,15 +15,7 @@ def create_schedule(db: Session, schedule: schedule_schemas.CreateSchedule):
 
 def query_schedule(db: Session, userId: int):
     db_all: list = db.query(Schedule).all()
-    db_e = []
-    for e in db_all:
-        if e.userId is None:
-            if e.userId == userId:
-                db_e.append(e)
-        else:
-            if any(f"{userId}" in item for item in e.userId.split(",")):
-                db_e.append(e)
-    return db_e
+    return checkUser(db_all, userId)
 
 
 def check_schedule(db: Session, e: schedule_schemas.CreateSchedule):

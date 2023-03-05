@@ -17,5 +17,21 @@ class CreateSchedule(BaseModel):
 class QuerySchedule(BaseModel):
     userId: str
 
+
 class ReadSchedule(CreateSchedule):
     eventId: int
+
+
+class CreateTable(BaseModel):
+    userId: int
+    currentWeek: int
+    lessonNum: int
+    totalWeek: int
+
+
+class QueryTable(BaseModel):
+    userId: int
+
+
+class ReadTable(CreateTable):
+    tableId: int
