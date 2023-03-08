@@ -11,7 +11,7 @@ userAPI = APIRouter()
 
 @userAPI.post("/create", response_model=user_schemas.ReadUser)
 async def create_user(user: user_schemas.CreateUser, db: Session = Depends(get_db)):
-    db_user = user_crud.check_user_exist(db=db, data=user)
+    db_user = user_crud.user_create_check(db=db, data=user)
     if db_user:
         return JSONResponse(content={"msg": "用户已存在"}, status_code=300)
     else:
@@ -31,7 +31,7 @@ async def create_user(user: user_schemas.CreateUser, db: Session = Depends(get_d
 
 @userAPI.post("/login", response_model=user_schemas.ReadUser)
 async def login(data: user_schemas.CreateUser, db: Session = Depends(get_db)):
-    db_user = user_crud.check_user_exist(db=db, data=data)
+    db_user = user_crud.user_login_check(db=db, data=data)
     if db_user is None:
         return JSONResponse(content={"d": {"msg": "用户不存在"}}, status_code=300)
     check = user_crud.query_user(db=db, username=data.userName, password=data.password)
