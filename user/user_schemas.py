@@ -8,6 +8,7 @@ class CreateUser(BaseModel):
     avatar: str
     userType: int
     classId: int
+    className: str
 
 
 class QueryUser(BaseModel):
@@ -15,6 +16,7 @@ class QueryUser(BaseModel):
     userType: int
     password: int
     school: str
+    classId: int
 
 
 class ReadUser(BaseModel):
@@ -24,3 +26,4 @@ class ReadUser(BaseModel):
     avatar: str
     userType: int
     classId: int
+    className: str

@@ -13,6 +13,7 @@ class User(Base, ModelConvert):
     avatar = Column(String(255), nullable=True)
     userType = Column(Integer, nullable=False)
     classId = Column(Integer, nullable=True)
+    className = Column(String(255), nullable=True)
 
     def __repr__(self):
         return f"{self.userId}-{self.userName}"

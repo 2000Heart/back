@@ -14,10 +14,23 @@ class CreateMajor(BaseModel):
 class CreateClass(BaseModel):
     teacherId: str
     userId: str
+    className: str
+    schoolName: str
 
+
+class QueryClass(BaseModel):
+    className: str
+    schoolName: str
+
+
+class UpdateClass(BaseModel):
+    classId: int
+    teacherId: int
+    userId: int
+    schoolName: str
 
 class CreateClassroom(BaseModel):
-    schoolId: int
+    schoolName: str
     roomName: str
     column: str
     row: str

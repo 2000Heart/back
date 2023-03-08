@@ -25,15 +25,17 @@ class ClassInfo(Base, ModelConvert):
     __tablename__ = 'class_info'
 
     classId = Column(Integer, primary_key=True, autoincrement=True)
+    className = Column(String(255))
     teacherId = Column(String(255))
     userId = Column(String(255))
+    schoolName = Column(String(255))
 
 
 class Classroom(Base, ModelConvert):
     __tablename__ = 'classroom'
 
     roomId = Column(Integer, primary_key=True, autoincrement=True)
-    schoolId = Column(Integer)
+    schoolName = Column(Integer)
     roomName = Column(String(255))
     column = Column(String(255))
     row = Column(String(255))

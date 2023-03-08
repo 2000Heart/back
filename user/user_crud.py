@@ -14,7 +14,8 @@ def create_user(db: Session, user: user_schemas.CreateUser):
 
 def check_user_exist(db: Session, data: user_schemas.CreateUser):
     return db.query(User).filter(
-        and_(User.userName == data.userName, User.school == data.school, User.userType == data.userType)).first()
+        and_(User.userName == data.userName, User.school == data.school, User.userType == data.userType,
+             User.className == data.className)).first()
 
 
 def query_user(db: Session, username: str, password: str):

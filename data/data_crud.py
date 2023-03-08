@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from data import data_schemas
 from data.data_models import Lessons, ClassInfo, Classroom
@@ -17,6 +18,24 @@ def create_class(db: Session, data: data_schemas.CreateClass):
     db.commit()
     db.refresh(db_class)
     return db_class
+
+
+def query_class(db: Session, data: data_schemas.QueryClass):
+    return db.query(ClassInfo).filter(
+        and_(ClassInfo.className == data.className, ClassInfo.schoolName == data.schoolName)).first()
+
+
+def update_class(db: Session, data: data_schemas.UpdateClass):
+    db_data = db.query(ClassInfo).filter_by(classId=data.classId)
+    e = db_data.first().userId
+    s = db_data.first().teacherId
+    e.split(",").append(f"{data.userId}")
+    s.split(",").append(f"{data.teacherId}")
+    if data.schoolName is None:
+        db_data.update({"userId": ",".join(e), "teacherId": ",".join(s)})
+    else:
+        db_data.update({"userId": ",".join(e), "teacherId": ",".join(s), "schoolName": data.schoolName})
+    db.commit()
 
 
 def create_classroom(db: Session, data: data_schemas.CreateClass):
