@@ -7,23 +7,34 @@ class CreateUser(BaseModel):
     school: str
     avatar: str
     userType: int
+    academy: str
+    major: str
     classId: int
     className: str
+    account: str
 
 
 class QueryUser(BaseModel):
     userName: str
     userType: int
-    password: int
+    password: str
     school: str
     classId: int
 
 
+class Login(BaseModel):
+    userName: str
+    password: str
+
+
 class ReadUser(BaseModel):
-    userId: str
+    userId: int
     userName: str
     school: str
     avatar: str
     userType: int
+    academy: str
+    major: str
     classId: int
     className: str
+    account: str

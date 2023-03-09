@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
@@ -6,18 +8,19 @@ from lesson import lesson_schemas, lesson_crud
 lessonAPI = APIRouter()
 
 
-@lessonAPI.post("/check/create", response_model=lesson_schemas.ReadCheck)
+@lessonAPI.post("/check/create")
 async def create_check(e: lesson_schemas.CreateCheck, db: Session = Depends(get_db)):
+    db_data = lesson_crud.create_check(db, e)
+    return {"d": db_data, "t": json.dumps(db_data.key_values())}
 
-    return e
 
-
-@lessonAPI.post("/create", response_model=lesson_schemas.ReadLessonInfo)
+@lessonAPI.post("/create")
 async def create_lesson(e: lesson_schemas.CreateLessonInfo, db: Session = Depends(get_db)):
-    return e
+    db_data = lesson_crud.create_lesson(db, e)
+    return {"d": db_data, "t": json.dumps(db_data.key_values())}
 
 
-@lessonAPI.post("/query", response_model=lesson_schemas.ReadLessonInfo)
+@lessonAPI.post("/query")
 async def query_lesson(e: lesson_schemas.QueryLessonInfo, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_lesson(db, e.userId, e.userType)
     if db_data is None:

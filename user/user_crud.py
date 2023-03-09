@@ -18,10 +18,9 @@ def user_create_check(db: Session, data: user_schemas.CreateUser):
              User.className == data.className)).first()
 
 
-def user_login_check(db: Session, data: user_schemas.CreateUser):
+def user_account_check(db: Session, data: user_schemas.Login):
     return db.query(User).filter(
-        and_(User.userName == data.userName, User.school == data.school, User.userType == data.userType,
-             User.className == data.className)).first()
+        and_(User.userName == data.userName)).first()
 
 
 def query_user(db: Session, username: str, password: str):

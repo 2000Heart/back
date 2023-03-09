@@ -10,7 +10,7 @@ from data import data_schemas, data_crud
 scheduleAPI = APIRouter()
 
 
-@scheduleAPI.post("/create", response_model=schedule_schemas.ReadSchedule)
+@scheduleAPI.post("/create")
 async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = Depends(get_db)):
     if data.lessonId is None:
         data.lessonId = data_crud.create_lesson(db, data_schemas.CreateLesson(lessonName=data.lessonName)).lessonId
@@ -28,11 +28,17 @@ async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = D
         return {"d": db_insert, "t": db_insert}
 
 
-@scheduleAPI.post("/query", response_model=schedule_schemas.ReadSchedule)
+@scheduleAPI.post("/query")
 async def query_schedule(userId: int, db: Session = Depends(get_db)):
     db_schedule: list = schedule_crud.query_schedule(db, userId)
     if db_schedule is None:
         raise HTTPException(status_code=404, detail="当前用户无课程表")
-    for item in db_schedule:
-        item.duration = item.duration.split(sep=",")
+    return {"d": db_schedule, "t": db_schedule}
+
+
+@scheduleAPI.post("/table")
+async def query_table(userId: int, db: Session = Depends(get_db)):
+    db_schedule: list = schedule_crud.query_table(db, userId)
+    if db_schedule is None:
+        raise HTTPException(status_code=404, detail="当前用户无设置")
     return {"d": db_schedule, "t": db_schedule}
