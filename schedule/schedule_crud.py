@@ -41,3 +41,9 @@ def create_default_table(db: Session, userId: int):
 def query_table(db: Session, userId: int):
     db_data = db.query(Schedule).filter_by(userId=userId).first()
     return db_data
+
+
+def update_table(db: Session, table: schedule_schemas.UpdateTable):
+    num = db.query(Schedule).filter_by(tableId=table.tableId).update(table.dict())
+    db.commit()
+    return num

@@ -42,3 +42,11 @@ async def query_table(userId: int, db: Session = Depends(get_db)):
     if db_schedule is None:
         raise HTTPException(status_code=404, detail="当前用户无设置")
     return {"d": db_schedule, "t": db_schedule}
+
+
+@scheduleAPI.post("/table/update")
+async def update_table(data: schedule_schemas.UpdateTable, db: Session = Depends(get_db)):
+    db_data = schedule_crud.update_schedule(data, db)
+    if db_data <= 0:
+        raise HTTPException(status_code=404, detail="课表获取错误")
+    return {"d": db_data, "t": db_data}

@@ -29,6 +29,14 @@ class CreateTable(BaseModel):
     totalWeek: int
 
 
+class UpdateTable(BaseModel):
+    tableId: int
+    userId: int
+    currentWeek: int
+    lessonNum: int
+    totalWeek: int
+
+
 class QueryTable(BaseModel):
     userId: int
 

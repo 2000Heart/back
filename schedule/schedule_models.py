@@ -25,7 +25,7 @@ class Table(Base, ModelConvert):
     __tablename__ = 'table_set'
 
     tableId = Column(Integer, primary_key=True, autoincrement=True)
-    userId = Column(String(255), nullable=True)
+    userId = Column(Integer, nullable=True)
     currentWeek = Column(Integer)
     lessonNum = Column(Integer)
     totalWeek = Column(Integer)
