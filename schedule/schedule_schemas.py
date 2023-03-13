@@ -15,7 +15,21 @@ class CreateSchedule(BaseModel):
 
 
 class QuerySchedule(BaseModel):
-    userId: str
+    userId: int
+
+
+class UpdateSchedule(BaseModel):
+    eventId: int
+    lessonId: int = None
+    lessonName: str = None
+    teacherId: int = None
+    teacherName: str = None
+    userId: str = None
+    duration: str = None
+    weekTime: int = None
+    startUnit: int = None
+    endUnit: int = None
+    classroom: str = None
 
 
 class ReadSchedule(CreateSchedule):

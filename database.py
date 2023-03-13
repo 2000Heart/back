@@ -2,6 +2,7 @@
 import json
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from starlette.responses import JSONResponse
 
 url = "mysql+pymysql://back444:as4793552@47.115.211.39:3306/back444"
 engine = create_engine(url, echo=True)
@@ -27,3 +28,7 @@ def body(value):
         "d": value,
         "t": json.dumps(value.key_values())
     }
+
+
+def errorResponse(value):
+    return JSONResponse(content={"d": {"msg": value}}, status_code=300)

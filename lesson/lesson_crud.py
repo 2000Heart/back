@@ -20,11 +20,16 @@ def create_check(db: Session, data: lesson_schemas.CreateCheck):
     return db_data
 
 
-def insert_task(db: Session, data: lesson_schemas.AddLessonTask):
+def update_task(db: Session, data: lesson_schemas.AddLessonTask):
     db_data = db.query(LessonInfo).filter_by(infoId=data.infoId)
     e = db_data.first().lessonTask
-    e.split(",").append(data.lessonTask)
-    num = db_data.update({"lessonTask": ",".join(e)})
+    num: int
+    if e is None:
+        e = data.lessonTask
+        num = db_data.update({"lessonTask": e})
+    else:
+        e.split(",").append(data.lessonTask)
+        num = db_data.update({"lessonTask": ",".join(e)})
     db.commit()
     return num
 
@@ -35,12 +40,15 @@ def insert_check(db: Session, data: lesson_schemas.AddLessonCheck):
     return num
 
 
-def query_lesson(db: Session, data: int, userType: int):
+def query_lesson(db: Session, data: lesson_schemas.QueryLessonInfo):
     data_all = db.query(LessonInfo).all()
-    if userType == 0:
-        return checkUser(data_all, data)
+    if data.infoId != 0:
+        return db.query(LessonInfo).filter_by(infoId=data.infoId).first()
     else:
-        return checkTeacher(data_all, data)
+        if data.userType == 0:
+            return checkUser(data_all, data.userId)
+        else:
+            return checkTeacher(data_all, data.userId)
 
 
 def query_check_list(db: Session, data: int):

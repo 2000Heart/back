@@ -25,9 +25,10 @@ class QueryClass(BaseModel):
 
 class UpdateClass(BaseModel):
     classId: int
-    teacherId: int
-    userId: int
+    teacherId: int = 0
+    userId: int = 0
     schoolName: str
+
 
 class CreateClassroom(BaseModel):
     schoolName: str
