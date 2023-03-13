@@ -19,26 +19,32 @@ async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = D
         db_create = schedule_crud.create_schedule(db, data)
         return {"d": db_create, "t": json.dumps(db_create.key_values())}
     else:
-        db_data = data
+        db_data = db_schedule
         if db_schedule.userId is not None:
             e: list = db_schedule.userId.split(",")
             e.append(data.userId)
             db_data.userId = ",".join(e)
-        db_insert = schedule_crud.update_schedule(db, db_schedule.eventId, db_data)
-        return {"d": db_insert, "t": db_insert}
+        db_update = schedule_crud.update_schedule(db, schedule_schemas.UpdateSchedule(userId=db_data.userId))
+        return {"d": db_update, "t": db_update}
+
+
+@scheduleAPI.post("/update")
+async def create_schedule(data: schedule_schemas.UpdateSchedule, db: Session = Depends(get_db)):
+    db_data = schedule_crud.update_schedule(db, data)
+    return {"d": db_data, "t": db_data}
 
 
 @scheduleAPI.post("/query")
-async def query_schedule(userId: int, db: Session = Depends(get_db)):
-    db_schedule: list = schedule_crud.query_schedule(db, userId)
+async def query_schedule(data: schedule_schemas.QuerySchedule, db: Session = Depends(get_db)):
+    db_schedule: list = schedule_crud.query_schedule(db, data.userId)
     if db_schedule is None:
         raise HTTPException(status_code=404, detail="当前用户无课程表")
     return {"d": db_schedule, "t": db_schedule}
 
 
-@scheduleAPI.post("/table")
-async def query_table(userId: int, db: Session = Depends(get_db)):
-    db_schedule: list = schedule_crud.query_table(db, userId)
+@scheduleAPI.post("/table/query")
+async def query_table(data: schedule_schemas.QueryTable, db: Session = Depends(get_db)):
+    db_schedule: list = schedule_crud.query_table(db, data.userId)
     if db_schedule is None:
         raise HTTPException(status_code=404, detail="当前用户无设置")
     return {"d": db_schedule, "t": db_schedule}
@@ -46,7 +52,7 @@ async def query_table(userId: int, db: Session = Depends(get_db)):
 
 @scheduleAPI.post("/table/update")
 async def update_table(data: schedule_schemas.UpdateTable, db: Session = Depends(get_db)):
-    db_data = schedule_crud.update_schedule(data, db)
+    db_data = schedule_crud.update_table(db, data)
     if db_data <= 0:
         raise HTTPException(status_code=404, detail="课表获取错误")
     return {"d": db_data, "t": db_data}

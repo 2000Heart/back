@@ -7,8 +7,10 @@ class CheckInLesson(Base, ModelConvert):
     __tablename__ = 'check_schedule'
 
     checkId = Column(Integer, primary_key=True, autoincrement=True)
-    realLessonId = Column(Integer, ForeignKey('real_lesson.realLessonId'))
+    infoId = Column(Integer, ForeignKey('lesson_info.infoId'))
+    lessonName = Column(String(255))
     teacherId = Column(Integer)
+    teacherName = Column(String(255))
     postTime = Column(String(255), nullable=True)
     checkedUser = Column(String(255), nullable=True)
     userAll = Column(String(255), nullable=False)

@@ -1,3 +1,6 @@
+import datetime
+from xmlrpc.client import DateTime
+
 from pydantic import BaseModel
 
 
@@ -39,8 +42,10 @@ class AddUser(BaseModel):
 
 
 class CreateCheck(BaseModel):
-    lessonId: int
+    infoId: int
+    lessonName: str
     teacherId: int
+    teacherName: str
     postTime: str
     checkedUser: str
     userAll: str
@@ -50,7 +55,7 @@ class CreateCheck(BaseModel):
 
 
 class QueryCheck(BaseModel):
-    lessonId: int
+    infoId: int
     userId: int
 
 

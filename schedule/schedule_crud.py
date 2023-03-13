@@ -24,8 +24,8 @@ def check_schedule(db: Session, e: schedule_schemas.CreateSchedule):
              Schedule.startUnit == e.startUnit, Schedule.endUnit == e.endUnit)).first()
 
 
-def update_schedule(db: Session, eventId: int, e):
-    num = db.query(Schedule).filter_by(eventId=eventId).update(e.dict())
+def update_schedule(db: Session, e: schedule_schemas.UpdateSchedule):
+    num = db.query(Schedule).filter_by(eventId=e.eventId).update(e.dict(exclude_none=True))
     db.commit()
     return num
 
@@ -39,11 +39,11 @@ def create_default_table(db: Session, userId: int):
 
 
 def query_table(db: Session, userId: int):
-    db_data = db.query(Schedule).filter_by(userId=userId).first()
+    db_data = db.query(Table).filter_by(userId=userId).first()
     return db_data
 
 
 def update_table(db: Session, table: schedule_schemas.UpdateTable):
-    num = db.query(Schedule).filter_by(tableId=table.tableId).update(table.dict())
+    num = db.query(Table).filter_by(tableId=table.tableId).update(table.dict())
     db.commit()
     return num
