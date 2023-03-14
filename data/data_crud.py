@@ -13,6 +13,10 @@ def create_lesson(db: Session, data: data_schemas.CreateLesson):
     return db_lesson
 
 
+def query_lesson(db: Session, data: str):
+    return db.query(Lessons).filter(Lessons.lessonName == data).first()
+
+
 def create_class(db: Session, data: data_schemas.CreateClass):
     db_class = ClassInfo(**data.dict())
     db.add(db_class)

@@ -13,11 +13,14 @@ scheduleAPI = APIRouter()
 @scheduleAPI.post("/create")
 async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = Depends(get_db)):
     if data.lessonId is None:
-        data.lessonId = data_crud.create_lesson(db, data_schemas.CreateLesson(lessonName=data.lessonName)).lessonId
+        db_lesson = data_crud.query_lesson(db, data.lessonName)
+        if db_lesson.lessonId is None:
+            data.lessonId = data_crud.create_lesson(db, data_schemas.CreateLesson(lessonName=data.lessonName))
+        data.lessonId = db_lesson.lessonId
     db_schedule: schedule_models.Schedule = schedule_crud.check_schedule(db, data)
     if db_schedule is None:
         db_create = schedule_crud.create_schedule(db, data)
-        return {"d": db_create, "t": json.dumps(db_create.key_values())}
+        return {"d": db_create, "t": db_create}
     else:
         db_data = db_schedule
         if db_schedule.userId is not None:
