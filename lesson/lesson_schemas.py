@@ -55,7 +55,7 @@ class CreateCheck(BaseModel):
 
 
 class QueryCheck(BaseModel):
-    lessonId: int
+    infoId: int
     userId: int
 
 

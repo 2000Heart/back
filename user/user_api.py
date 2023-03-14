@@ -30,6 +30,20 @@ async def create_user(user: user_schemas.CreateUser, db: Session = Depends(get_d
     return {"d": c_user, "t": c_user}
 
 
+@userAPI.post("/update")
+async def update_user(user: user_schemas.UpdateUser, db: Session = Depends(get_db)):
+    data = user
+    if user.className is not None:
+        db_class = data_schemas.QueryClass(className=user.className, schoolName=user.school)
+        class_info = data_crud.query_class(db, db_class)
+        if class_info is None:
+            class_info = data_crud.create_class(db, data_schemas.CreateClass(
+                className=user.className, schoolName=user.school))
+        data.classId = class_info.classId
+    num = user_crud.update_user(db, data)
+    return {"d": num, "t": num}
+
+
 @userAPI.post("/login")
 async def login(data: user_schemas.Login, db: Session = Depends(get_db)):
     db_user = user_crud.user_account_check(db=db, data=data)

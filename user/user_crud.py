@@ -23,5 +23,9 @@ def user_account_check(db: Session, data: user_schemas.Login):
         and_(User.userName == data.userName)).first()
 
 
+def update_user(db: Session, data: user_schemas.UpdateUser):
+    num = db.query(User).filter_by(userId=data.userId).update(data.dict(exclude_none=True))
+    return num
+
 def query_user(db: Session, username: str, password: str):
     return db.query(User).filter(and_(User.userName == username, User.password == password)).first()

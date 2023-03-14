@@ -17,6 +17,16 @@ def checkTeacher(db_all: list, element):
     return db_e
 
 
+def checkClass(db_all: list, element: list, schoolName: str):
+    db_e = []
+    for e in db_all:
+        if e.schoolName == schoolName:
+            for x in element:
+                if e.className == x:
+                    db_e.append(e)
+    return db_e
+
+
 def updateList(data: str, element: int):
     if element == 0:
         return data

@@ -57,4 +57,4 @@ def query_check_list(db: Session, data: int):
 
 
 def query_check(db: Session, data: int):
-    return db.query(CheckInLesson).filter_by(lessonId=data).first()
+    return db.query(CheckInLesson).filter_by(infoId=data).first()

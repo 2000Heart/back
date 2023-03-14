@@ -44,9 +44,9 @@ async def query_check_list(e: lesson_schemas.QueryCheck, db: Session = Depends(g
 
 @lessonAPI.post("/check/query")
 async def query_check(e: lesson_schemas.QueryCheck, db: Session = Depends(get_db)):
-    db_data = lesson_crud.query_check(db, e.lessonId)
+    db_data = lesson_crud.query_check(db, e.infoId)
     if db_data is None:
         return errorResponse("当前课程无签到")
-    return {"d": db_data, "t": db_data.key_values()}
+    return {"d": db_data, "t": db_data}
 
 

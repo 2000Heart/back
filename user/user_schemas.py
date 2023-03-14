@@ -22,6 +22,18 @@ class QueryUser(BaseModel):
     classId: int
 
 
+class UpdateUser(BaseModel):
+    userId: int
+    userName: str = None
+    password: str = None
+    school: str = None
+    avatar: str = None
+    academy: str = None
+    major: str = None
+    className: str = None
+    account: str = None
+
+
 class Login(BaseModel):
     userName: str
     password: str
