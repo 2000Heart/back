@@ -16,6 +16,8 @@ class CheckInLesson(Base, ModelConvert):
     userAll = Column(String(255), nullable=False)
     startTime = Column(String(255), nullable=False)
     endTime = Column(String(255), nullable=False)
+    column = Column(String(255))
+    row = Column(String(255))
     status = Column(Integer)
 
     Base.metadata.create_all(engine)

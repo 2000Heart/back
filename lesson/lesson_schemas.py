@@ -51,6 +51,8 @@ class CreateCheck(BaseModel):
     userAll: str
     startTime: str
     endTime: str
+    column: str
+    row: str
     status: int
 
 
