@@ -10,7 +10,7 @@ class Schedule(Base, ModelConvert):
     userId = Column(String(255), nullable=True)
     lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
     lessonName = Column(String(255), ForeignKey('lessons.lessonName'))
-    teacherId = Column(Integer, nullable=True)
+    teacherId = Column(String, nullable=True)
     teacherName = Column(String(255), nullable=True)
     duration = Column(String(255), nullable=False)
     weekTime = Column(Integer, nullable=False)

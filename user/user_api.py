@@ -5,7 +5,9 @@ from data import data_crud, data_schemas
 from starlette.responses import JSONResponse
 from database import get_db, errorResponse
 from schedule import schedule_crud
+from schemas import Block
 from user import user_crud, user_schemas
+from user.user_models import User
 
 userAPI = APIRouter()
 

@@ -13,6 +13,11 @@ def create_schedule(db: Session, schedule: schedule_schemas.CreateSchedule):
     return db_schedule
 
 
+def create_schedule_all(db: Session, data: schedule_schemas.CreateScheduleAll):
+    db.bulk_insert_mappings(Schedule(), data.d)
+    db.commit()
+
+
 def query_schedule(db: Session, userId: int):
     db_all: list = db.query(Schedule).order_by(Schedule.startUnit.asc()).all()
     return checkUser(db_all, userId)

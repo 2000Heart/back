@@ -1,17 +1,18 @@
+from typing import List
 from pydantic import BaseModel
 
 
 class CreateSchedule(BaseModel):
     lessonId: int = None
     lessonName: str
-    teacherId: int
-    teacherName: str
+    teacherId: str = None
+    teacherName: str = ""
     userId: str
     duration: str
     weekTime: int
     startUnit: int
     endUnit: int
-    classroom: str
+    classroom: str = None
 
 
 class QuerySchedule(BaseModel):
@@ -22,7 +23,7 @@ class UpdateSchedule(BaseModel):
     eventId: int
     lessonId: int = None
     lessonName: str = None
-    teacherId: int = None
+    teacherId: str = None
     teacherName: str = None
     userId: str = None
     duration: str = None
@@ -34,6 +35,10 @@ class UpdateSchedule(BaseModel):
 
 class ReadSchedule(CreateSchedule):
     eventId: int
+
+
+class CreateScheduleAll(BaseModel):
+    d: List[CreateSchedule]
 
 
 class CreateTable(BaseModel):

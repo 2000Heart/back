@@ -31,8 +31,13 @@ async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = D
         return {"d": db_update, "t": db_update}
 
 
+@scheduleAPI.post("/create/all")
+async def create_schedule_all(data: schedule_schemas.CreateScheduleAll, db: Session = Depends(get_db)):
+    schedule_crud.create_schedule_all(db, data)
+
+
 @scheduleAPI.post("/update")
-async def create_schedule(data: schedule_schemas.UpdateSchedule, db: Session = Depends(get_db)):
+async def update_schedule(data: schedule_schemas.UpdateSchedule, db: Session = Depends(get_db)):
     db_data = schedule_crud.update_schedule(db, data)
     return {"d": db_data, "t": db_data}
 
