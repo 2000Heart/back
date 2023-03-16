@@ -40,7 +40,7 @@ def insert_check(db: Session, data: lesson_schemas.AddLessonCheck):
     return num
 
 
-def query_lesson(db: Session, data: lesson_schemas.QueryLessonInfo):
+def query_lesson(db: Session, data: lesson_schemas.QueryLessons):
     data_all = db.query(LessonInfo).all()
     if data.infoId != 0:
         return db.query(LessonInfo).filter_by(infoId=data.infoId).first()
@@ -58,3 +58,7 @@ def query_check_list(db: Session, data: int):
 
 def query_check(db: Session, data: int):
     return db.query(CheckInLesson).filter_by(infoId=data).first()
+
+
+def query_lesson_info(db: Session, data: lesson_schemas.QueryLessonInfo):
+    return db.query(LessonInfo).filter_by(lessonName=data.lessonName, schoolName=data.schoolName).first()

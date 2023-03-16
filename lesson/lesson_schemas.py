@@ -14,12 +14,18 @@ class CreateLessonInfo(BaseModel):
     eventId: int
     checkId: int
     userId: str
+    schoolName: str
 
 
-class QueryLessonInfo(BaseModel):
+class QueryLessons(BaseModel):
     userId: int
     infoId: int
     userType: int
+
+
+class QueryLessonInfo(BaseModel):
+    lessonName: str
+    schoolName: str
 
 
 class ReadLessonInfo(CreateLessonInfo):

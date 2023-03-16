@@ -19,6 +19,13 @@ class QuerySchedule(BaseModel):
     userId: int
 
 
+class QueryScheduleList(BaseModel):
+    userId: str
+    userType: int
+    weekTime: int
+    startUnit: int
+
+
 class UpdateSchedule(BaseModel):
     eventId: int
     lessonId: int = None

@@ -27,7 +27,7 @@ async def create_task(e: lesson_schemas.AddLessonTask, db: Session = Depends(get
 
 
 @lessonAPI.post("/query")
-async def query_lesson(e: lesson_schemas.QueryLessonInfo, db: Session = Depends(get_db)):
+async def query_lesson(e: lesson_schemas.QueryLessons, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_lesson(db, e)
     if db_data is None:
         return errorResponse("当前用户无课程")

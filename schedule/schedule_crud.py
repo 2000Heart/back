@@ -23,6 +23,19 @@ def query_schedule(db: Session, userId: int):
     return checkUser(db_all, userId)
 
 
+def query_schedule_list(db: Session, data: schedule_schemas.QueryScheduleList):
+    if data.userType == 0:
+        db_data = db.query(Schedule).where(
+            and_(Schedule.userId.like(data.userId), Schedule.weekTime == data.weekTime,
+                 Schedule.startUnit <= data.startUnit, Schedule.endUnit > data.startUnit)).all()
+        return db_data
+    else:
+        db_data = db.query(Schedule).filter(
+            and_(Schedule.teacherId.like(data.userId), Schedule.weekTime == data.weekTime,
+                 Schedule.startUnit <= data.startUnit, Schedule.endUnit > data.startUnit)).all()
+        return db_data
+
+
 def check_schedule(db: Session, e: schedule_schemas.CreateSchedule):
     return db.query(Schedule).filter(
         and_(Schedule.lessonId == e.lessonId, Schedule.duration == e.duration, Schedule.weekTime == e.weekTime,

@@ -50,6 +50,14 @@ async def query_schedule(data: schedule_schemas.QuerySchedule, db: Session = Dep
     return {"d": db_schedule, "t": db_schedule}
 
 
+@scheduleAPI.post("/query/list")
+async def query_schedule_list(data: schedule_schemas.QueryScheduleList, db: Session = Depends(get_db)):
+    db_schedule: list = schedule_crud.query_schedule_list(db, data)
+    if db_schedule is None:
+        raise HTTPException(status_code=404, detail="暂无数据")
+    return {"d": db_schedule, "t": db_schedule}
+
+
 @scheduleAPI.post("/table/query")
 async def query_table(data: schedule_schemas.QueryTable, db: Session = Depends(get_db)):
     db_schedule: list = schedule_crud.query_table(db, data.userId)
