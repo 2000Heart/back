@@ -42,7 +42,7 @@ def insert_check(db: Session, data: lesson_schemas.AddLessonCheck):
 
 def query_lesson(db: Session, data: lesson_schemas.QueryLessons):
     data_all = db.query(LessonInfo).all()
-    if data.infoId != 0:
+    if data.infoId != 0 and data.infoId is not None:
         return db.query(LessonInfo).filter_by(infoId=data.infoId).first()
     else:
         if data.userType == 0:

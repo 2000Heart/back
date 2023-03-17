@@ -1,5 +1,7 @@
 import datetime
+from typing import List
 from xmlrpc.client import DateTime
+from schedule import schedule_schemas
 
 from pydantic import BaseModel
 
@@ -7,7 +9,7 @@ from pydantic import BaseModel
 class CreateLessonInfo(BaseModel):
     lessonId: int
     lessonName: str
-    teacherId: int
+    teacherId: str
     teacherName: str
     lessonTask: str
     checkId: int
@@ -17,10 +19,15 @@ class CreateLessonInfo(BaseModel):
     schoolName: str
 
 
+class CreateLesson(BaseModel):
+    lesson: CreateLessonInfo
+    schedule: List[schedule_schemas.CreateSchedule]
+
+
 class QueryLessons(BaseModel):
-    userId: int
-    infoId: int
-    userType: int
+    userId: int = None
+    infoId: int = None
+    userType: int = None
 
 
 class QueryLessonInfo(BaseModel):

@@ -31,4 +31,4 @@ def body(value):
 
 
 def errorResponse(value):
-    return JSONResponse(content={"d": {"msg": value}}, status_code=300)
+    return JSONResponse(content={"d": {"msg": value}}, status_code=250)

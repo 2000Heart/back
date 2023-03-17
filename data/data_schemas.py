@@ -23,6 +23,10 @@ class QueryClass(BaseModel):
     schoolName: str
 
 
+class QueryClassList(BaseModel):
+    schoolName: str
+
+
 class UpdateClass(BaseModel):
     classId: int
     teacherId: int = 0

@@ -43,7 +43,7 @@ def update_class(db: Session, data: data_schemas.UpdateClass):
     return db_data.first()
 
 
-def create_classroom(db: Session, data: data_schemas.CreateClass):
+def create_classroom(db: Session, data: data_schemas.CreateClassroom):
     db_classroom = Classroom(**data.dict())
     db.add(db_classroom)
     db.commit()
