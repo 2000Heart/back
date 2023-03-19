@@ -24,6 +24,10 @@ class CreateLesson(BaseModel):
     schedule: List[schedule_schemas.CreateSchedule]
 
 
+class CreateLessonAll(BaseModel):
+    d: List[CreateLessonInfo]
+
+
 class QueryLessons(BaseModel):
     userId: int = None
     infoId: int = None

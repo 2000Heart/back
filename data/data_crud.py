@@ -17,6 +17,16 @@ def query_lesson(db: Session, data: str):
     return db.query(Lessons).filter(Lessons.lessonName == data).first()
 
 
+def get_lesson(db: Session, data: data_schemas.CreateLesson):
+    db_data = db.query(Lessons).filter_by(LessonName=data.lessonName).first()
+    if db_data is None:
+        db_data = Lessons(**data.dict())
+        db.add(db_data)
+        db.commit()
+        db.refresh(db_data)
+    return db_data
+
+
 def create_class(db: Session, data: data_schemas.CreateClass):
     db_class = ClassInfo(**data.dict())
     db.add(db_class)
@@ -28,6 +38,11 @@ def create_class(db: Session, data: data_schemas.CreateClass):
 def query_class(db: Session, data: data_schemas.QueryClass):
     return db.query(ClassInfo).filter(
         and_(ClassInfo.className == data.className, ClassInfo.schoolName == data.schoolName)).first()
+
+
+def query_class_list(db: Session, data: data_schemas.QueryClassList):
+    return db.query(ClassInfo).filter(
+        and_(ClassInfo.schoolName == data.schoolName, ClassInfo.teacherId.like(data.teacherId))).all()
 
 
 def update_class(db: Session, data: data_schemas.UpdateClass):

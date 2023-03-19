@@ -17,6 +17,7 @@ class CreateSchedule(BaseModel):
 
 class QuerySchedule(BaseModel):
     userId: int
+    userType: int
 
 
 class QueryScheduleList(BaseModel):

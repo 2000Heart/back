@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from lesson import lesson_schemas
 from lesson.lesson_models import LessonInfo, CheckInLesson
+from schedule import schedule_crud
 from utils import checkUser, checkTeacher
 
 
@@ -10,6 +11,11 @@ def create_lesson(db: Session, data: lesson_schemas.CreateLessonInfo):
     db.commit()
     db.refresh(db_data)
     return db_data
+
+
+def create_lesson_all(db: Session, data: lesson_schemas.CreateLessonAll):
+    db.bulk_insert_mappings(LessonInfo(), data.d)
+    db.commit()
 
 
 def create_check(db: Session, data: lesson_schemas.CreateCheck):
@@ -41,14 +47,15 @@ def insert_check(db: Session, data: lesson_schemas.AddLessonCheck):
 
 
 def query_lesson(db: Session, data: lesson_schemas.QueryLessons):
-    data_all = db.query(LessonInfo).all()
     if data.infoId != 0 and data.infoId is not None:
         return db.query(LessonInfo).filter_by(infoId=data.infoId).first()
     else:
-        if data.userType == 0:
-            return checkUser(data_all, data.userId)
-        else:
-            return checkTeacher(data_all, data.userId)
+        db_data = schedule_crud.query_schedule(db, data.userId, data.userType)
+        db_list = []
+        for i in db_data:
+            db_e = db.query(LessonInfo).filter(LessonInfo.eventId.like(i.eventId)).first()
+            db_list.append(db_e)
+        return db_list
 
 
 def query_check_list(db: Session, data: int):

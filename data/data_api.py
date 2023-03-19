@@ -28,8 +28,14 @@ async def query_class(data: data_schemas.QueryClass, db: Session = Depends(get_d
     return {"d": class_list, "t": class_list}
 
 
+@dataAPI.post("/class/query/list")
+async def query_class_list(data: data_schemas.QueryClassList, db: Session = Depends(get_db)):
+    class_list = data_crud.query_class_list(db, data)
+    return {"d": class_list, "t": class_list}
+
+
 @dataAPI.post("/classroom/list")
-async def query_classroom_list(data: data_schemas.QueryClassList, db: Session = Depends(get_db)):
+async def query_classroom_list(data: data_schemas.QueryClassroomList, db: Session = Depends(get_db)):
     db_data = db.query(Classroom).filter_by(schoolName=data.schoolName).all()
     return {"d": db_data, "t": db_data}
 
@@ -37,4 +43,10 @@ async def query_classroom_list(data: data_schemas.QueryClassList, db: Session = 
 @dataAPI.post("/classroom/create")
 async def create_classroom(data: data_schemas.CreateClassroom, db: Session = Depends(get_db)):
     db_data = data_crud.create_classroom(db, data)
+    return {"d": db_data, "t": db_data}
+
+
+@dataAPI.post("/lesson/get")
+async def create_classroom(data: data_schemas.CreateLesson, db: Session = Depends(get_db)):
+    db_data = data_crud.get_lesson(db, data)
     return {"d": db_data, "t": db_data}

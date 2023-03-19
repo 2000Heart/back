@@ -20,6 +20,10 @@ async def create_lesson(e: lesson_schemas.CreateLessonInfo, db: Session = Depend
     return {"d": db_data, "t": db_data}
 
 
+@lessonAPI.post("/create/all")
+async def create_lesson_all(data: lesson_schemas.CreateLessonAll, db: Session = Depends(get_db)):
+    lesson_crud.create_lesson_all(db, data)
+
 @lessonAPI.post("/task/create")
 async def create_task(e: lesson_schemas.AddLessonTask, db: Session = Depends(get_db)):
     db_data = lesson_crud.update_task(db, e)

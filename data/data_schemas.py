@@ -25,12 +25,17 @@ class QueryClass(BaseModel):
 
 class QueryClassList(BaseModel):
     schoolName: str
+    teacherId: int
 
 
 class UpdateClass(BaseModel):
     classId: int
     teacherId: int = 0
     userId: int = 0
+    schoolName: str
+
+
+class QueryClassroomList(BaseModel):
     schoolName: str
 
 

@@ -2,7 +2,7 @@ from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from schedule import schedule_schemas
 from schedule.schedule_models import Schedule, Table
-from utils import checkUser
+from utils import checkUser, checkTeacher
 
 
 def create_schedule(db: Session, schedule: schedule_schemas.CreateSchedule):
@@ -14,13 +14,20 @@ def create_schedule(db: Session, schedule: schedule_schemas.CreateSchedule):
 
 
 def create_schedule_all(db: Session, data: schedule_schemas.CreateScheduleAll):
-    db.bulk_insert_mappings(Schedule(), data.d)
+    db.bulk_save_objects(Schedule(), data.d)
     db.commit()
+    db_list = []
+    for i in data.d:
+        db_list.append(db.query(Schedule).filter_by(userId=i.userId, teacherId=i.teacherId, lessonName=i.lessonName))
+    return db_list
 
 
-def query_schedule(db: Session, userId: int):
+def query_schedule(db: Session, userId: int, userType: int):
     db_all: list = db.query(Schedule).order_by(Schedule.startUnit.asc()).all()
-    return checkUser(db_all, userId)
+    if userType == 0:
+        return checkUser(db_all, userId)
+    else:
+        return checkTeacher(db_all, userId)
 
 
 def query_schedule_list(db: Session, data: schedule_schemas.QueryScheduleList):

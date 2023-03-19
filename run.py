@@ -21,4 +21,4 @@ app.include_router(lessonAPI, prefix='/lesson', tags=['API'])
 app.include_router(dataAPI, prefix='/data', tags=['API'])
 
 if __name__ == '__main__':
-    uvicorn.run('run:app', host='127.0.0.1', port=8000, reload=True, workers=1)
+    uvicorn.run('run:app', host='0.0.0.0', port=8888, reload=True, workers=1)

@@ -33,7 +33,8 @@ async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = D
 
 @scheduleAPI.post("/create/all")
 async def create_schedule_all(data: schedule_schemas.CreateScheduleAll, db: Session = Depends(get_db)):
-    schedule_crud.create_schedule_all(db, data)
+    db_data = schedule_crud.create_schedule_all(db, data)
+    return {"d": db_data, "t": db_data}
 
 
 @scheduleAPI.post("/update")
@@ -44,7 +45,7 @@ async def update_schedule(data: schedule_schemas.UpdateSchedule, db: Session = D
 
 @scheduleAPI.post("/query")
 async def query_schedule(data: schedule_schemas.QuerySchedule, db: Session = Depends(get_db)):
-    db_schedule: list = schedule_crud.query_schedule(db, data.userId)
+    db_schedule: list = schedule_crud.query_schedule(db, data.userId, data.userType)
     if db_schedule is None:
         raise HTTPException(status_code=404, detail="当前用户无课程表")
     return {"d": db_schedule, "t": db_schedule}
