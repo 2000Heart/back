@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy import and_, insert
 from sqlalchemy.orm import Session
 from schedule import schedule_schemas
@@ -47,6 +49,11 @@ def query_schedule_list(db: Session, data: schedule_schemas.QueryScheduleList):
             and_(Schedule.teacherId.like(f"%{data.userId}%"), Schedule.weekTime == data.weekTime,
                  Schedule.startUnit <= data.startUnit, Schedule.endUnit > data.startUnit)).all()
         return db_data
+
+
+def query_schedule_all(db: Session, eventId: List[int]):
+    db_all: list = db.query(Schedule).filter(Schedule.eventId.in_(eventId)).all()
+    return db_all
 
 
 def check_schedule(db: Session, e: schedule_schemas.CreateSchedule):

@@ -71,5 +71,9 @@ def query_check(db: Session, data: int):
         CheckInLesson.startTime >= datetime.now()).first()
 
 
+def update_check(db: Session, data: lesson_schemas.UpdateCheck):
+    return db.query(CheckInLesson).filter_by(checkId=data.checkId).update({CheckInLesson.userId: data.userId})
+
+
 def query_lesson_info(db: Session, data: lesson_schemas.QueryLessonInfo):
     return db.query(LessonInfo).filter_by(lessonName=data.lessonName, schoolName=data.schoolName).first()

@@ -72,5 +72,10 @@ class QueryCheck(BaseModel):
     userId: int
 
 
+class UpdateCheck(BaseModel):
+    checkId: int
+    userId: str
+
+
 class ReadCheck(CreateCheck):
     checkId: int
