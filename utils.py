@@ -11,9 +11,10 @@ def checkUser(db_all: list, element):
 def checkTeacher(db_all: list, element):
     db_e = []
     for e in db_all:
-        for item in e.teacherId.split(","):
-            if item == f"{element}":
-                db_e.append(e)
+        if e.teacherId is not None:
+            for item in e.teacherId.split(","):
+                if item == f"{element}":
+                    db_e.append(e)
     return db_e
 
 

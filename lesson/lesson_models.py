@@ -30,7 +30,7 @@ class LessonInfo(Base, ModelConvert):
     lessonId = Column(Integer, ForeignKey('lessons.lessonId'))
     lessonName = Column(String(255))
     teacherId = Column(String(255))
-    eventId = Column(Integer, ForeignKey('lesson_schedule.eventId'))
+    eventId = Column(String(255))
     teacherName = Column(String(255))
     lessonTask = Column(String(255))
     checkId = Column(Integer, ForeignKey('check_schedule'), nullable=True)

@@ -9,13 +9,7 @@ from pydantic import BaseModel
 class CreateLessonInfo(BaseModel):
     lessonId: int
     lessonName: str
-    teacherId: str
-    teacherName: str
-    lessonTask: str
-    checkId: int
-    eventId: int
-    checkId: int
-    userId: str
+    eventId: str
     schoolName: str
 
 

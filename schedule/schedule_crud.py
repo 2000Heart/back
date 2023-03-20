@@ -1,4 +1,4 @@
-from sqlalchemy import and_
+from sqlalchemy import and_, insert
 from sqlalchemy.orm import Session
 from schedule import schedule_schemas
 from schedule.schedule_models import Schedule, Table
@@ -14,11 +14,17 @@ def create_schedule(db: Session, schedule: schedule_schemas.CreateSchedule):
 
 
 def create_schedule_all(db: Session, data: schedule_schemas.CreateScheduleAll):
-    db.bulk_save_objects(Schedule(), data.d)
+    db_need = []
+    for i in data.d:
+        db_data = db.query(Schedule).filter_by(**i.dict()).first()
+        if db_data is None:
+            db_need.append(i.dict())
+    db.bulk_insert_mappings(Schedule(), db_need)
     db.commit()
     db_list = []
     for i in data.d:
-        db_list.append(db.query(Schedule).filter_by(userId=i.userId, teacherId=i.teacherId, lessonName=i.lessonName))
+        db_list.append(
+            db.query(Schedule).filter_by(userId=i.userId, teacherId=i.teacherId, lessonName=i.lessonName).first())
     return db_list
 
 
@@ -33,12 +39,12 @@ def query_schedule(db: Session, userId: int, userType: int):
 def query_schedule_list(db: Session, data: schedule_schemas.QueryScheduleList):
     if data.userType == 0:
         db_data = db.query(Schedule).where(
-            and_(Schedule.userId.like(data.userId), Schedule.weekTime == data.weekTime,
+            and_(Schedule.userId.like(f"%{data.userId}%"), Schedule.weekTime == data.weekTime,
                  Schedule.startUnit <= data.startUnit, Schedule.endUnit > data.startUnit)).all()
         return db_data
     else:
         db_data = db.query(Schedule).filter(
-            and_(Schedule.teacherId.like(data.userId), Schedule.weekTime == data.weekTime,
+            and_(Schedule.teacherId.like(f"%{data.userId}%"), Schedule.weekTime == data.weekTime,
                  Schedule.startUnit <= data.startUnit, Schedule.endUnit > data.startUnit)).all()
         return db_data
 

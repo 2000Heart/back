@@ -18,7 +18,7 @@ def query_lesson(db: Session, data: str):
 
 
 def get_lesson(db: Session, data: data_schemas.CreateLesson):
-    db_data = db.query(Lessons).filter_by(LessonName=data.lessonName).first()
+    db_data = db.query(Lessons).filter_by(lessonName=data.lessonName).first()
     if db_data is None:
         db_data = Lessons(**data.dict())
         db.add(db_data)
@@ -42,7 +42,7 @@ def query_class(db: Session, data: data_schemas.QueryClass):
 
 def query_class_list(db: Session, data: data_schemas.QueryClassList):
     return db.query(ClassInfo).filter(
-        and_(ClassInfo.schoolName == data.schoolName, ClassInfo.teacherId.like(data.teacherId))).all()
+        and_(ClassInfo.schoolName == data.schoolName, ClassInfo.teacherId.like(f"%{data.teacherId}%"))).all()
 
 
 def update_class(db: Session, data: data_schemas.UpdateClass):
