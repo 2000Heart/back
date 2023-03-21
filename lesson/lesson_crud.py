@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 from lesson import lesson_schemas
-from lesson.lesson_models import LessonInfo, CheckInLesson
+from lesson.lesson_models import LessonInfo, CheckInLesson, CheckStu
 from schedule import schedule_crud
 from utils import checkUser, checkTeacher
 
@@ -22,6 +22,14 @@ def create_lesson_all(db: Session, data: lesson_schemas.CreateLessonAll):
 
 def create_check(db: Session, data: lesson_schemas.CreateCheck):
     db_data = CheckInLesson(**data.dict())
+    db.add(db_data)
+    db.commit()
+    db.refresh(db_data)
+    return db_data
+
+
+def create_check_stu(db: Session, data: lesson_schemas.CreateCheckStu):
+    db_data = CheckStu(**data.dict())
     db.add(db_data)
     db.commit()
     db.refresh(db_data)
@@ -66,14 +74,33 @@ def query_check_list(db: Session, data: int):
     return checkUser(data_all, data)
 
 
+def query_check_stu(db: Session, data: int):
+    data_all = db.query(CheckStu).filter_by(checkId=data).all()
+    return data_all
+
+
 def query_check(db: Session, data: int):
     return db.query(CheckInLesson).filter_by(infoId=data).order_by(CheckInLesson.startTime.asc()).filter(
         CheckInLesson.startTime >= datetime.now()).first()
 
 
 def update_check(db: Session, data: lesson_schemas.UpdateCheck):
-    return db.query(CheckInLesson).filter_by(checkId=data.checkId).update({CheckInLesson.userId: data.userId})
+    num = db.query(CheckInLesson).filter_by(checkId=data.checkId).update({CheckInLesson.checkedUser: data.userId})
+    db.commit()
+    return num
+
+
+def update_check_stu(db: Session, data: lesson_schemas.UpdateCheckStu):
+    num = db.query(CheckStu).filter_by(id=data.id).update({CheckStu.index: data.index})
+    db.commit()
+    return num
 
 
 def query_lesson_info(db: Session, data: lesson_schemas.QueryLessonInfo):
     return db.query(LessonInfo).filter_by(lessonName=data.lessonName, schoolName=data.schoolName).first()
+
+
+def delete_check_stu(db: Session, data: lesson_schemas.DeleteCheckStu):
+    num = db.query(CheckStu).filter_by(id=data.id).delete()
+    db.commit()
+    return num

@@ -15,6 +15,12 @@ async def create_check(e: lesson_schemas.CreateCheck, db: Session = Depends(get_
     return {"d": db_data, "t": db_data}
 
 
+@lessonAPI.post("/check/stu/create")
+async def create_check_stu(e: lesson_schemas.CreateCheckStu, db: Session = Depends(get_db)):
+    db_data = lesson_crud.create_check_stu(db, e)
+    return {"d": db_data, "t": db_data}
+
+
 @lessonAPI.post("/create")
 async def create_lesson(e: lesson_schemas.CreateLessonInfo, db: Session = Depends(get_db)):
     db_data = lesson_crud.create_lesson(db, e)
@@ -45,15 +51,23 @@ async def query_lesson_schedule(e: lesson_schemas.QueryLessons, db: Session = De
     db_data = lesson_crud.query_lesson(db, e)
     if db_data is None:
         return errorResponse("未查询到课程")
-    schedule_crud.query_schedule_all(db, [int(x) for x in db_data.eventId.split(',')])
+    db_data = schedule_crud.query_schedule_all(db, [int(x) for x in db_data.eventId.split(',')])
     return {"d": db_data, "t": db_data}
 
 
 @lessonAPI.post("/check/queryList")
 async def query_check_list(e: lesson_schemas.QueryCheck, db: Session = Depends(get_db)):
-    db_data = lesson_crud.query_check_list(db, e.userId)
+    db_data = lesson_crud.query_check_stu_list(db, e.userId)
     if db_data is None:
         return errorResponse("当前用户无签到记录")
+    return {"d": db_data, "t": db_data}
+
+
+@lessonAPI.post("/check/stu/query")
+async def query_check_stu(e: lesson_schemas.QueryCheckStu, db: Session = Depends(get_db)):
+    db_data = lesson_crud.query_check_stu(db, e.checkId)
+    if db_data is None:
+        return errorResponse("无签到人员")
     return {"d": db_data, "t": db_data}
 
 
@@ -68,4 +82,16 @@ async def query_check(e: lesson_schemas.QueryCheck, db: Session = Depends(get_db
 @lessonAPI.post("/check/update")
 async def update_check(e: lesson_schemas.UpdateCheck, db: Session = Depends(get_db)):
     db_data = lesson_crud.update_check(db, e)
-    return db_data
+    return {"d": db_data, "t": db_data}
+
+
+@lessonAPI.post("/check/stu/update")
+async def update_check_stu(e: lesson_schemas.UpdateCheckStu, db: Session = Depends(get_db)):
+    db_data = lesson_crud.update_check_stu(db, e)
+    return {"d": db_data, "t": db_data}
+
+
+@lessonAPI.post("/check/stu/delete")
+async def delete_check_stu(e: lesson_schemas.DeleteCheckStu, db: Session = Depends(get_db)):
+    db_data = lesson_crud.delete_check_stu(db, e)
+    return {"d": db_data, "t": db_data}

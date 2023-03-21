@@ -67,14 +67,34 @@ class CreateCheck(BaseModel):
     status: int
 
 
+class CreateCheckStu(BaseModel):
+    checkId: int
+    userId: int
+    userName: str
+    index: int
+
+
 class QueryCheck(BaseModel):
     infoId: int
     userId: int
 
 
+class QueryCheckStu(BaseModel):
+    checkId: int
+
+
 class UpdateCheck(BaseModel):
     checkId: int
     userId: str
+
+
+class UpdateCheckStu(BaseModel):
+    id: int
+    index: int
+
+
+class DeleteCheckStu(BaseModel):
+    id: int
 
 
 class ReadCheck(CreateCheck):

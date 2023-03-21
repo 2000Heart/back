@@ -12,8 +12,8 @@ class CheckInLesson(Base, ModelConvert):
     teacherId = Column(Integer)
     teacherName = Column(String(255))
     postTime = Column(String(255), nullable=True)
-    checkedUser = Column(String(255), nullable=True)
-    userAll = Column(String(255), nullable=False)
+    checkedUser = Column(String(648), nullable=True)
+    userAll = Column(String(648), nullable=False)
     startTime = Column(String(255), nullable=False)
     endTime = Column(String(255), nullable=False)
     column = Column(String(255))
@@ -21,6 +21,16 @@ class CheckInLesson(Base, ModelConvert):
     status = Column(Integer)
 
     Base.metadata.create_all(engine)
+
+
+class CheckStu(Base, ModelConvert):
+    __tablename__ = 'check_stu'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    checkId = Column(Integer)
+    userId = Column(Integer)
+    userName = Column(String(255))
+    index = Column(Integer)
 
 
 class LessonInfo(Base, ModelConvert):
