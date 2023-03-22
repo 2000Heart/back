@@ -46,7 +46,7 @@ async def create_classroom(data: data_schemas.CreateClassroom, db: Session = Dep
     return {"d": db_data, "t": db_data}
 
 
-@dataAPI.post("/lesson/get")
-async def create_classroom(data: data_schemas.CreateLesson, db: Session = Depends(get_db)):
-    db_data = data_crud.get_lesson(db, data)
+@dataAPI.post("/classroom/query")
+async def query_classroom(data: data_schemas.QueryClassroom, db: Session = Depends(get_db)):
+    db_data = data_crud.query_classroom(db, data)
     return {"d": db_data, "t": db_data}

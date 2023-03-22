@@ -58,13 +58,11 @@ class CreateCheck(BaseModel):
     teacherId: int
     teacherName: str
     postTime: str
-    checkedUser: str
     userAll: str
     startTime: str
     endTime: str
     column: str
     row: str
-    status: int
 
 
 class CreateCheckStu(BaseModel):

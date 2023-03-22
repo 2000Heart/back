@@ -35,6 +35,11 @@ class UpdateClass(BaseModel):
     schoolName: str
 
 
+class QueryClassroom(BaseModel):
+    roomName: str
+    schoolName: str
+
+
 class QueryClassroomList(BaseModel):
     schoolName: str
 

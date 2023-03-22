@@ -66,6 +66,11 @@ def create_classroom(db: Session, data: data_schemas.CreateClassroom):
     return db_classroom
 
 
+def query_classroom(db: Session, data: data_schemas.QueryClassroom):
+    return db.query(Classroom).filter(
+        and_(Classroom.roomName == data.roomName, ClassInfo.schoolName == data.schoolName)).first()
+
+
 def create_major(db: Session, data: data_schemas.CreateMajor):
     db_major = Classroom(**data.dict())
     db.add(db_major)

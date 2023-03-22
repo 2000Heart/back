@@ -42,41 +42,41 @@ async def create_task(e: lesson_schemas.AddLessonTask, db: Session = Depends(get
 async def query_lesson(e: lesson_schemas.QueryLessons, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_lesson(db, e)
     if db_data is None:
-        return errorResponse("当前用户无课程")
-    return {"d": db_data, "t": db_data}
+        return {"d": db_data, "t": "当前用户无课程"}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/query/schedule")
 async def query_lesson_schedule(e: lesson_schemas.QueryLessons, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_lesson(db, e)
     if db_data is None:
-        return errorResponse("未查询到课程")
+        return {"d": db_data, "t": "未查询到课程"}
     db_data = schedule_crud.query_schedule_all(db, [int(x) for x in db_data.eventId.split(',')])
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/queryList")
 async def query_check_list(e: lesson_schemas.QueryCheck, db: Session = Depends(get_db)):
-    db_data = lesson_crud.query_check_stu_list(db, e.userId)
+    db_data = lesson_crud.query_check_stu(db, e.userId)
     if db_data is None:
-        return errorResponse("当前用户无签到记录")
-    return {"d": db_data, "t": db_data}
+        return {"d": db_data, "t": "当前用户无签到记录"}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/stu/query")
 async def query_check_stu(e: lesson_schemas.QueryCheckStu, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_check_stu(db, e.checkId)
     if db_data is None:
-        return errorResponse("无签到人员")
-    return {"d": db_data, "t": db_data}
+        return {"d": db_data, "t": "无签到人员"}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/query")
 async def query_check(e: lesson_schemas.QueryCheck, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_check(db, e.infoId)
     if db_data is None:
-        return errorResponse("当前课程无签到")
-    return {"d": db_data, "t": db_data}
+        return {"d": db_data, "t": "当前课程无签到"}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/update")
