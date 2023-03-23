@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from lesson import lesson_schemas
 from lesson.lesson_models import LessonInfo, CheckInLesson, CheckStu
+from message import message_crud
+from message.message_schemas import CreateMessage
 from schedule import schedule_crud
 from utils import checkUser, checkTeacher
 
