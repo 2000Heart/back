@@ -77,7 +77,7 @@ def query_check_list(db: Session, data: int):
 
 
 def query_check_stu(db: Session, data: int):
-    data_all = db.query(CheckStu).filter_by(checkId=data).all()
+    data_all = db.query(CheckStu).filter_by(checkId=data).subquery(CheckInLesson).all()
     return data_all
 
 

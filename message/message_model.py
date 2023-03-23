@@ -12,5 +12,6 @@ class Message(Base, ModelConvert):
     posterName = Column(String(255))
     userAll = Column(String(255))
     title = Column(String(255))
+    content = Column(String(255))
     postTime = Column(String(255))
     type = Column(String(255))

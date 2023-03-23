@@ -6,10 +6,10 @@ class CreateMessage(BaseModel):
     posterName: str
     userAll: str
     title: str
+    content: str
     postTime: str
     type: int
 
 
 class QueryMessage(BaseModel):
     userId: int
-    userType: int

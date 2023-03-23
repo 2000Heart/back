@@ -14,9 +14,5 @@ def create_message(db: Session, data: message_schemas.CreateMessage):
 
 
 def query_message(db: Session, data: message_schemas.QueryMessage):
-    if data.userType == 0:
         return db.query(Message).filter(
-            and_(Message.userAll.like(f"%{data.userId}%"), Message.type not in [12])).order_by(
-            Message.posterId.desc()).all()
-    else:
-        return db.query(Message).filter(and_(Message.posterId == data.userId, Message.type not in [10, 11])).all()
+            Message.userAll.like(f"%{data.userId}%")).order_by(Message.posterId.desc()).all()
