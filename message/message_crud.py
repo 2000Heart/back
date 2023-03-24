@@ -14,5 +14,5 @@ def create_message(db: Session, data: message_schemas.CreateMessage):
 
 
 def query_message(db: Session, data: message_schemas.QueryMessage):
-        return db.query(Message).filter(
-            Message.userAll.like(f"%{data.userId}%")).order_by(Message.posterId.desc()).all()
+    return db.query(Message).filter(
+        Message.userAll.like(f"%{data.userId}%")).order_by(Message.posterId.desc()).all()

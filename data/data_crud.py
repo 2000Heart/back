@@ -1,8 +1,11 @@
+from typing import List, Type
+
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from data import data_schemas
 import utils
 from data.data_models import Lessons, ClassInfo, Classroom
+from user.user_crud import query_user_all
 
 
 def create_lesson(db: Session, data: data_schemas.CreateLesson):
@@ -41,8 +44,14 @@ def query_class(db: Session, data: data_schemas.QueryClass):
 
 
 def query_class_list(db: Session, data: data_schemas.QueryClassList):
-    return db.query(ClassInfo).filter(
+    db_data: List[data_schemas.ReadClassInfo] = []
+    class_all = db.query(ClassInfo).filter(
         and_(ClassInfo.schoolName == data.schoolName, ClassInfo.teacherId.like(f"%{data.teacherId}%"))).all()
+    for e in class_all:
+        e_data = data_schemas.ReadClassInfo(**e.__dict__)
+        e_data.students = query_user_all(db, [int(x) for x in e.userId.split(',')])
+        db_data.append(e_data)
+    return db_data
 
 
 def update_class(db: Session, data: data_schemas.UpdateClass):

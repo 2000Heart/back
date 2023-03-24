@@ -95,3 +95,9 @@ async def update_check_stu(e: lesson_schemas.UpdateCheckStu, db: Session = Depen
 async def delete_check_stu(e: lesson_schemas.DeleteCheckStu, db: Session = Depends(get_db)):
     db_data = lesson_crud.delete_check_stu(db, e)
     return {"d": db_data, "t": db_data}
+
+
+@lessonAPI.post("/check/history")
+async def query_check_history(e: lesson_schemas.QueryCheckHistory, db: Session = Depends(get_db)):
+    db_data = lesson_crud.query_check_history(db, e)
+    return {"d": db_data, "t": db_data}

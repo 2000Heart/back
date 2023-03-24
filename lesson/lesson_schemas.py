@@ -81,6 +81,11 @@ class QueryCheckStu(BaseModel):
     checkId: int
 
 
+class QueryCheckHistory(BaseModel):
+    userId: int
+    userType: int
+
+
 class UpdateCheck(BaseModel):
     checkId: int
     userId: str
@@ -97,3 +102,11 @@ class DeleteCheckStu(BaseModel):
 
 class ReadCheck(CreateCheck):
     checkId: int
+
+
+class ReadHistory(CreateCheck):
+    checkId: int
+    checked: int = None
+    checkNum: int = None
+    need: int = None
+    miss: str = None

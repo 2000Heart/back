@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from user import user_schemas
@@ -27,5 +29,15 @@ def update_user(db: Session, data: user_schemas.UpdateUser):
     num = db.query(User).filter_by(userId=data.userId).update(data.dict(exclude_none=True))
     return num
 
+
 def query_user(db: Session, username: str, password: str):
     return db.query(User).filter(and_(User.userName == username, User.password == password)).first()
+
+
+def trans_name(db: Session, userId: List[int]):
+    username = db.query(User).filter(User.userId.in_(userId)).with_entities(User.userName).all()
+    return ','.join([i[0] for i in username])
+
+
+def query_user_all(db: Session, userId: List[int]):
+    return db.query(User).filter(User.userId.in_(userId)).all()

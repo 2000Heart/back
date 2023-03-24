@@ -1,6 +1,9 @@
-from typing import Any
+from typing import Any, List
 
 from pydantic import BaseModel
+
+from user.user_models import User
+from user.user_schemas import ReadUser
 
 
 class CreateLesson(BaseModel):
@@ -59,3 +62,6 @@ class Return(BaseModel):
     d: dict
     t: dict
 
+
+class ReadClassInfo(CreateClass):
+    students: List[ReadUser] = []

@@ -6,6 +6,7 @@ from lesson.lesson_models import LessonInfo, CheckInLesson, CheckStu
 from message import message_crud
 from message.message_schemas import CreateMessage
 from schedule import schedule_crud
+from user.user_crud import trans_name
 from utils import checkUser, checkTeacher
 
 
@@ -72,12 +73,33 @@ def query_lesson(db: Session, data: lesson_schemas.QueryLessons):
 
 
 def query_check_list(db: Session, data: int):
-    data_all = db.query(CheckInLesson).all()
-    return checkUser(data_all, data)
+    data_all = db.query(CheckInLesson).filter(CheckInLesson.userAll.like(f"%{data}%")).all()
+    return data_all
+
+
+def query_check_history(db: Session, data: lesson_schemas.QueryCheckHistory):
+    db_data = []
+    if data.userType == 1:
+        check_all = db.query(CheckInLesson).filter_by(teacherId=data.userId).all()
+    else:
+        check_all = db.query(CheckInLesson).filter(CheckInLesson.userAll.like(f"%{data.userId}%")).all()
+    for e in check_all:
+        need = [int(x) for x in e.userAll.split(',')]
+        checked = query_check_stu(db, e.checkId)
+        i = lesson_schemas.ReadHistory(**e.__dict__)
+        i.need = need.__len__()
+        i.checkNum = checked.__len__()
+        if [check.userId for check in checked].__contains__(data.userId):
+            i.checked = 1
+        else:
+            i.checked = 0
+        i.miss = trans_name(db, list(set(need).symmetric_difference(set([check.userId for check in checked]))))
+        db_data.append(i)
+    return db_data
 
 
 def query_check_stu(db: Session, data: int):
-    data_all = db.query(CheckStu).filter_by(checkId=data).subquery(CheckInLesson).all()
+    data_all = db.query(CheckStu).filter_by(checkId=data).all()
     return data_all
 
 
