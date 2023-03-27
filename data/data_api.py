@@ -61,6 +61,6 @@ async def create_upload_file(userId: int = Form(...), file: UploadFile = Form(..
     content = await file.read()
     with open("test/" + file.filename, "wb") as f:
         f.write(content)
-    url = "http://127.0.0.1:8888/test/" + file.filename
+    url = "http://192.168.1.104:8888/test/" + file.filename
     db_data = user_crud.update_user(db, user_schemas.UpdateUser(userId=userId, avatar=url))
     return {"d": db_data, "t": db_data}
