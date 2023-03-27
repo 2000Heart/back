@@ -27,7 +27,12 @@ def user_account_check(db: Session, data: user_schemas.Login):
 
 def update_user(db: Session, data: user_schemas.UpdateUser):
     num = db.query(User).filter_by(userId=data.userId).update(data.dict(exclude_none=True))
-    return num
+    if num > 0:
+        db_data = db.query(User).filter_by(userId=data.userId).first()
+        print(db_data.key_values())
+        return db_data
+    else:
+        return None
 
 
 def query_user(db: Session, username: str, password: str):

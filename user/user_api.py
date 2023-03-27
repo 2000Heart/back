@@ -42,8 +42,8 @@ async def update_user(user: user_schemas.UpdateUser, db: Session = Depends(get_d
             class_info = data_crud.create_class(db, data_schemas.CreateClass(
                 className=user.className, schoolName=user.school))
         data.classId = class_info.classId
-    num = user_crud.update_user(db, data)
-    return {"d": num, "t": num}
+    db_data = user_crud.update_user(db, data)
+    return {"d": db_data, "t": db_data}
 
 
 @userAPI.post("/login")

@@ -1,9 +1,13 @@
-from fastapi import APIRouter, Depends
+import os.path
+import shutil
+
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from data.data_models import School, ClassInfo, Classroom
 from data import data_schemas, data_crud
 from database import get_db
+from user import user_crud, user_schemas
 from utils import checkClass
 
 dataAPI = APIRouter()
@@ -49,4 +53,14 @@ async def create_classroom(data: data_schemas.CreateClassroom, db: Session = Dep
 @dataAPI.post("/classroom/query")
 async def query_classroom(data: data_schemas.QueryClassroom, db: Session = Depends(get_db)):
     db_data = data_crud.query_classroom(db, data)
+    return {"d": db_data, "t": db_data}
+
+
+@dataAPI.post("/avatar/upload")
+async def create_upload_file(userId: int = Form(...), file: UploadFile = Form(...), db: Session = Depends(get_db)):
+    content = await file.read()
+    with open("test/" + file.filename, "wb") as f:
+        f.write(content)
+    url = "http://127.0.0.1:8888/test/" + file.filename
+    db_data = user_crud.update_user(db, user_schemas.UpdateUser(userId=userId, avatar=url))
     return {"d": db_data, "t": db_data}
