@@ -4,6 +4,8 @@ import shutil
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
+from starlette.responses import FileResponse
+
 from data.data_models import School, ClassInfo, Classroom
 from data import data_schemas, data_crud
 from database import get_db
@@ -61,6 +63,6 @@ async def create_upload_file(userId: int = Form(...), file: UploadFile = Form(..
     content = await file.read()
     with open("test/" + file.filename, "wb") as f:
         f.write(content)
-    url = "http://192.168.1.104:8888/test/" + file.filename
+    url = "http://192.168.1.104:8888/avatar/" + file.filename
     db_data = user_crud.update_user(db, user_schemas.UpdateUser(userId=userId, avatar=url))
     return {"d": db_data, "t": db_data}
