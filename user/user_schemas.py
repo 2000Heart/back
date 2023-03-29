@@ -30,6 +30,7 @@ class UpdateUser(BaseModel):
     avatar: str = None
     academy: str = None
     major: str = None
+    classId: int = None
     className: str = None
     account: str = None
 

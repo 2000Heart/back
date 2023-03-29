@@ -20,7 +20,7 @@ async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = D
     db_schedule: schedule_models.Schedule = schedule_crud.check_schedule(db, data)
     if db_schedule is None:
         db_create = schedule_crud.create_schedule(db, data)
-        return {"d": db_create, "t": db_create}
+        return {"d": db_create, "t": None}
     else:
         db_data = db_schedule
         if db_schedule.userId is not None:
@@ -28,48 +28,48 @@ async def create_schedule(data: schedule_schemas.CreateSchedule, db: Session = D
             e.append(data.userId)
             db_data.userId = ",".join(e)
         db_update = schedule_crud.update_schedule(db, schedule_schemas.UpdateSchedule(userId=db_data.userId))
-        return {"d": db_update, "t": db_update}
+        return {"d": db_update, "t": None}
 
 
 @scheduleAPI.post("/create/all")
 async def create_schedule_all(data: schedule_schemas.CreateScheduleAll, db: Session = Depends(get_db)):
     db_data = schedule_crud.create_schedule_all(db, data)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @scheduleAPI.post("/update")
 async def update_schedule(data: schedule_schemas.UpdateSchedule, db: Session = Depends(get_db)):
     db_data = schedule_crud.update_schedule(db, data)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @scheduleAPI.post("/query")
 async def query_schedule(data: schedule_schemas.QuerySchedule, db: Session = Depends(get_db)):
     db_schedule: list = schedule_crud.query_schedule(db, data.userId, data.userType)
     if db_schedule is None:
-        raise HTTPException(status_code=404, detail="当前用户无课程表")
-    return {"d": db_schedule, "t": db_schedule}
+        return {"d": None, "t": "当前用户无课程表"}
+    return {"d": db_schedule, "t": None}
 
 
 @scheduleAPI.post("/query/list")
 async def query_schedule_list(data: schedule_schemas.QueryScheduleList, db: Session = Depends(get_db)):
     db_schedule: list = schedule_crud.query_schedule_list(db, data)
     if db_schedule is None:
-        raise HTTPException(status_code=404, detail="暂无数据")
-    return {"d": db_schedule, "t": db_schedule}
+        return {"d": None, "t": "暂无数据"}
+    return {"d": db_schedule, "t": None}
 
 
 @scheduleAPI.post("/table/query")
 async def query_table(data: schedule_schemas.QueryTable, db: Session = Depends(get_db)):
     db_schedule: list = schedule_crud.query_table(db, data.userId)
     if db_schedule is None:
-        raise HTTPException(status_code=404, detail="当前用户无设置")
-    return {"d": db_schedule, "t": db_schedule}
+        return {"d": None, "t": "当前用户无设置"}
+    return {"d": db_schedule, "t": None}
 
 
 @scheduleAPI.post("/table/update")
 async def update_table(data: schedule_schemas.UpdateTable, db: Session = Depends(get_db)):
     db_data = schedule_crud.update_table(db, data)
     if db_data <= 0:
-        raise HTTPException(status_code=404, detail="课表获取错误")
-    return {"d": db_data, "t": db_data}
+        return {"d": None, "t": "课表获取错误"}
+    return {"d": db_data, "t": None}

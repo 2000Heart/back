@@ -12,19 +12,19 @@ lessonAPI = APIRouter()
 @lessonAPI.post("/check/create")
 async def create_check(e: lesson_schemas.CreateCheck, db: Session = Depends(get_db)):
     db_data = lesson_crud.create_check(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/stu/create")
 async def create_check_stu(e: lesson_schemas.CreateCheckStu, db: Session = Depends(get_db)):
     db_data = lesson_crud.create_check_stu(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/create")
 async def create_lesson(e: lesson_schemas.CreateLessonInfo, db: Session = Depends(get_db)):
     db_data = lesson_crud.create_lesson(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/create/all")
@@ -35,7 +35,7 @@ async def create_lesson_all(data: lesson_schemas.CreateLessonAll, db: Session = 
 @lessonAPI.post("/task/create")
 async def create_task(e: lesson_schemas.AddLessonTask, db: Session = Depends(get_db)):
     db_data = lesson_crud.update_task(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/query")
@@ -82,22 +82,22 @@ async def query_check(e: lesson_schemas.QueryCheck, db: Session = Depends(get_db
 @lessonAPI.post("/check/update")
 async def update_check(e: lesson_schemas.UpdateCheck, db: Session = Depends(get_db)):
     db_data = lesson_crud.update_check(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/stu/update")
 async def update_check_stu(e: lesson_schemas.UpdateCheckStu, db: Session = Depends(get_db)):
     db_data = lesson_crud.update_check_stu(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/stu/delete")
 async def delete_check_stu(e: lesson_schemas.DeleteCheckStu, db: Session = Depends(get_db)):
     db_data = lesson_crud.delete_check_stu(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @lessonAPI.post("/check/history")
 async def query_check_history(e: lesson_schemas.QueryCheckHistory, db: Session = Depends(get_db)):
     db_data = lesson_crud.query_check_history(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}

@@ -10,7 +10,7 @@ messageAPI = APIRouter()
 @messageAPI.post("/create")
 async def create_check(e: message_schemas.CreateMessage, db: Session = Depends(get_db)):
     db_data = message_crud.create_message(db, e)
-    return {"d": db_data, "t": db_data}
+    return {"d": db_data, "t": None}
 
 
 @messageAPI.post("/query")
