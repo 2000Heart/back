@@ -63,13 +63,11 @@ def query_lesson(db: Session, data: lesson_schemas.QueryLessons):
     if data.infoId != 0 and data.infoId is not None:
         return db.query(LessonInfo).filter_by(infoId=data.infoId).first()
     else:
-        db_data = schedule_crud.query_schedule(db, data.userId, data.userType)
-        db_list = []
-        for i in db_data:
-            db_e = db.query(LessonInfo).filter(LessonInfo.eventId.like(f"%{i.eventId}%")).first()
-            if db_e is not None:
-                db_list.append(db_e)
-        return list(set(db_list))
+        if data.userType == 0:
+            db_e = db.query(LessonInfo).filter(LessonInfo.userId.like(f"%{data.userId}%")).all()
+        else:
+            db_e = db.query(LessonInfo).filter(LessonInfo.teacherId.like(f"%{data.userId}")).all()
+    return db_e
 
 
 def query_check_list(db: Session, data: int):

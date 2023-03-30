@@ -54,6 +54,11 @@ def query_class_list(db: Session, data: data_schemas.QueryClassList):
     return db_data
 
 
+def query_class_school_list(db: Session, data: data_schemas.QueryClassList):
+    class_list = db.query(ClassInfo).filter_by(schoolName=data.schoolName).all()
+    return class_list
+
+
 def update_class(db: Session, data: data_schemas.UpdateClass):
     db_data = db.query(ClassInfo).filter_by(classId=data.classId)
     e = db_data.first().userId

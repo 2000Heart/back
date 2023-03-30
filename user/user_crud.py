@@ -22,7 +22,7 @@ def user_create_check(db: Session, data: user_schemas.CreateUser):
 
 def user_account_check(db: Session, data: user_schemas.Login):
     return db.query(User).filter(
-        and_(User.userName == data.userName)).first()
+        and_(User.account == data.account)).first()
 
 
 def update_user(db: Session, data: user_schemas.UpdateUser):

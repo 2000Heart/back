@@ -29,7 +29,7 @@ class QueryClass(BaseModel):
 
 class QueryClassList(BaseModel):
     schoolName: str
-    teacherId: int
+    teacherId: int = None
 
 
 class UpdateClass(BaseModel):

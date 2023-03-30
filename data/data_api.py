@@ -40,6 +40,12 @@ async def query_class_list(data: data_schemas.QueryClassList, db: Session = Depe
     return {"d": class_list, "t": None}
 
 
+@dataAPI.post("/class/query/school/list")
+async def query_class_list(data: data_schemas.QueryClassList, db: Session = Depends(get_db)):
+    class_list = data_crud.query_class_list(db, data)
+    return {"d": class_list, "t": None}
+
+
 @dataAPI.post("/classroom/list")
 async def query_classroom_list(data: data_schemas.QueryClassroomList, db: Session = Depends(get_db)):
     db_data = db.query(Classroom).filter_by(schoolName=data.schoolName).all()

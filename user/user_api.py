@@ -56,7 +56,7 @@ async def login(data: user_schemas.Login, db: Session = Depends(get_db)):
     db_user = user_crud.user_account_check(db=db, data=data)
     if db_user is None:
         return {"d": None, "t": "用户不存在"}
-    check = user_crud.query_user(db=db, username=data.userName, password=data.password)
+    check = user_crud.query_user(db=db, username=data.account, password=data.password)
     if check is None:
         return {"d": None, "t": "密码错误"}
     else:
