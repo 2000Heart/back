@@ -16,9 +16,10 @@ userAPI = APIRouter()
 @userAPI.post("/create")
 async def create_user(user: user_schemas.CreateUser, db: Session = Depends(get_db)):
     db_user = user_crud.user_create_check(db=db, data=user)
-    if db.query(User).filter_by(account=user.account).first():
+    db_check = db.query(User).filter_by(account=user.account).first()
+    if db_check is not None:
         return {"d": None, "t": "账号名已存在，请重新输入"}
-    if db_user:
+    if db_user is not None:
         return {"d": None, "t": "该学生已有账号，请直接登录"}
     else:
         db_class = data_schemas.QueryClass(className=user.className, schoolName=user.school)

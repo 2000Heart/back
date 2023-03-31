@@ -43,6 +43,5 @@ class LessonInfo(Base, ModelConvert):
     eventId = Column(String(255))
     teacherName = Column(String(255))
     lessonTask = Column(String(255))
-    checkId = Column(Integer, ForeignKey('check_schedule'), nullable=True)
     userId = Column(String(255))
     schoolName = Column(String(255))

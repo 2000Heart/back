@@ -9,7 +9,7 @@ class CreateUser(BaseModel):
     userType: int
     academy: str = None
     major: str = None
-    classId: int
+    classId: int = None
     className: str
     account: str
 
