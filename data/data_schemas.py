@@ -34,7 +34,6 @@ class QueryClassList(BaseModel):
 
 class UpdateClass(BaseModel):
     classId: int
-    teacherId: int = 0
     userId: int = 0
     schoolName: str
 

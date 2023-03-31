@@ -5,10 +5,10 @@ class CreateUser(BaseModel):
     userName: str
     password: str
     school: str
-    avatar: str
+    avatar: str = None
     userType: int
-    academy: str
-    major: str
+    academy: str = None
+    major: str = None
     classId: int
     className: str
     account: str

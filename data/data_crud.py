@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from data import data_schemas
 import utils
 from data.data_models import Lessons, ClassInfo, Classroom
+from lesson.lesson_models import LessonInfo
+from schedule.schedule_models import Schedule
 from user.user_crud import query_user_all
 
 
@@ -60,16 +62,16 @@ def query_class_school_list(db: Session, data: data_schemas.QueryClassList):
 
 
 def update_class(db: Session, data: data_schemas.UpdateClass):
-    db_data = db.query(ClassInfo).filter_by(classId=data.classId)
-    e = db_data.first().userId
-    s = db_data.first().teacherId
-    if data.schoolName is None:
-        db_data.update({"userId": utils.updateList(e, data.userId), "teacherId": utils.updateList(s, data.teacherId)})
-    else:
-        db_data.update({"userId": utils.updateList(e, data.userId), "teacherId": utils.updateList(s, data.teacherId),
-                        "schoolName": data.schoolName})
+    db_class = db.query(ClassInfo).filter_by(schoolName=data.schoolName, classId=data.classId).first()
+    db_lesson: List[Type[LessonInfo]] = db.query(LessonInfo).filter(LessonInfo.userId.like(f"%{db_class.userId}%")).all()
+    db_schedule: List[Type[Schedule]] = db.query(Schedule).filter(Schedule.userId.like(f"%{db_class.userId}%")).all()
+    for j in db_lesson:
+        j.userId += f"{data.userId}"
+    for i in db_schedule:
+        i.userId += f"{data.userId}"
+    db_class.userId += f"{data.userId}"
     db.commit()
-    return db_data.first()
+    return db_class
 
 
 def create_classroom(db: Session, data: data_schemas.CreateClassroom):

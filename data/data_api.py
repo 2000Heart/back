@@ -18,7 +18,7 @@ dataAPI = APIRouter()
 @dataAPI.post("/school/all")
 async def query_school_all(db: Session = Depends(get_db)):
     school_all = db.query(School).all()
-    return {"d": school_all, "t": None}
+    return {"d": list(set(school_all)), "t": None}
 
 
 @dataAPI.post("/class/update")
@@ -42,7 +42,7 @@ async def query_class_list(data: data_schemas.QueryClassList, db: Session = Depe
 
 @dataAPI.post("/class/query/school/list")
 async def query_class_list(data: data_schemas.QueryClassList, db: Session = Depends(get_db)):
-    class_list = data_crud.query_class_list(db, data)
+    class_list = data_crud.query_class_school_list(db, data)
     return {"d": class_list, "t": None}
 
 
