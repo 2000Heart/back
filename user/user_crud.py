@@ -35,8 +35,8 @@ def update_user(db: Session, data: user_schemas.UpdateUser):
         return None
 
 
-def query_user(db: Session, username: str, password: str):
-    return db.query(User).filter(and_(User.userName == username, User.password == password)).first()
+def query_user(db: Session, account: str, password: str):
+    return db.query(User).filter(and_(User.account == account, User.password == password)).first()
 
 
 def trans_name(db: Session, userId: List[int]):

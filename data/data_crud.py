@@ -66,10 +66,10 @@ def update_class(db: Session, data: data_schemas.UpdateClass):
     db_lesson: List[Type[LessonInfo]] = db.query(LessonInfo).filter(LessonInfo.userId.like(f"%{db_class.userId}%")).all()
     db_schedule: List[Type[Schedule]] = db.query(Schedule).filter(Schedule.userId.like(f"%{db_class.userId}%")).all()
     for j in db_lesson:
-        j.userId += f"{data.userId}"
+        j.userId += f",{data.userId}"
     for i in db_schedule:
-        i.userId += f"{data.userId}"
-    db_class.userId += f"{data.userId}"
+        i.userId += f",{data.userId}"
+    db_class.userId += f",{data.userId}"
     db.commit()
     return db_class
 

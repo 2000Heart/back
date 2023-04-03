@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import and_, insert
+from sqlalchemy import and_, insert, asc
 from sqlalchemy.orm import Session
 from schedule import schedule_schemas
 from schedule.schedule_models import Schedule, Table
@@ -31,7 +31,7 @@ def create_schedule_all(db: Session, data: schedule_schemas.CreateScheduleAll):
 
 
 def query_schedule(db: Session, userId: int, userType: int):
-    db_all: list = db.query(Schedule).order_by(Schedule.startUnit.asc()).all()
+    db_all: list = db.query(Schedule).order_by(Schedule.weekTime.asc(), Schedule.startUnit.asc()).all()
     if userType == 0:
         return checkUser(db_all, userId)
     else:
